@@ -593,3 +593,75 @@ describe('Kas Crud', function() {
       })
   })
 })
+
+var penjaminId
+describe('Penjamin Crud', function() {
+  it('Should create new Penjamin', function(done) {
+    chai.request(app)
+      .post('/penjamin')
+      .set('token', token)
+      .set('otoritas','create_penjamin')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Penjamin');
+         expect(res.body).to.have.property('data');
+         penjaminId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Penjamin without auth', function(done) {
+    chai.request(app)
+      .post('/penjamin')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Penjamin', function(done) {
+    chai.request(app)
+      .put(`/penjamin/${penjaminId}`)
+      .set('token', token)
+      .set('otoritas','edit_penjamin')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Penjamin');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Penjamin', function(done) {
+    chai.request(app)
+      .del(`/penjamin/${penjaminId}`)
+      .set('token', token)
+      .set('otoritas','delete_penjamin')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Penjamin');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Penjamin without auth', function(done) {
+    chai.request(app)
+      .del(`/penjamin/${penjaminId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})

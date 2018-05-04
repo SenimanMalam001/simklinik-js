@@ -189,6 +189,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_penjamin',
+      display_name: 'Lihat Penjamin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_penjamin',
+      display_name: 'Buat Penjamin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_penjamin',
+      display_name: 'Ubah Penjamin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_penjamin',
+      display_name: 'Hapus Penjamin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
