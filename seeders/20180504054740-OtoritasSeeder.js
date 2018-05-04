@@ -237,6 +237,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_produk',
+      display_name: 'Lihat Produk',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_produk',
+      display_name: 'Buat Produk',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_produk',
+      display_name: 'Ubah Produk',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_produk',
+      display_name: 'Hapus Produk',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

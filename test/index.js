@@ -737,3 +737,75 @@ describe('Supplier Crud', function() {
       })
   })
 })
+
+var produkId
+describe('Produk Crud', function() {
+  it('Should create new Produk', function(done) {
+    chai.request(app)
+      .post('/produk')
+      .set('token', token)
+      .set('otoritas','create_produk')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Produk');
+         expect(res.body).to.have.property('data');
+         produkId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Produk without auth', function(done) {
+    chai.request(app)
+      .post('/produk')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Produk', function(done) {
+    chai.request(app)
+      .put(`/produk/${produkId}`)
+      .set('token', token)
+      .set('otoritas','edit_produk')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Produk');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Produk', function(done) {
+    chai.request(app)
+      .del(`/produk/${produkId}`)
+      .set('token', token)
+      .set('otoritas','delete_produk')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Produk');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Produk without auth', function(done) {
+    chai.request(app)
+      .del(`/produk/${produkId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})
