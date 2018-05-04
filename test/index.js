@@ -162,71 +162,218 @@ describe('Otoritas Management', function() {
       })
   })
 });
-// var passwordId
-// describe('Password Management', function() {
-//   it('Should create new Password', function(done) {
-//     chai.request(app)
-//       .post('/passwords')
-//       .set('token', token)
-//       .send({ username: faker.internet.userName(), password: faker.internet.password(), url: faker.internet.url() })
-//       .end(function(err, res) {
-//          expect(res).to.have.status(201);
-//          expect(res).to.be.json;
-//          expect(res.body).to.have.property('message');
-//          expect(res.body.message).to.equal('Success Add new Password');
-//          expect(res.body).to.have.property('data');
-//          passwordId = res.body.data._id
-//          done();
-//       })
-//   })
-//   it('Should Give error when create new Password without auth', function(done) {
-//     chai.request(app)
-//       .post('/passwords')
-//       .send({ username: faker.internet.userName(), password: faker.internet.password(), url: faker.internet.url() })
-//       .end(function(err, res) {
-//          expect(res).to.have.status(403);
-//          expect(res).to.be.json;
-//          expect(res.body).to.have.property('message');
-//          expect(res.body.message).to.equal('Invalid Token');
-//          done();
-//       })
-//   })
-//   it('Should Update Password', function(done) {
-//     chai.request(app)
-//       .put(`/passwords/${passwordId}`)
-//       .set('token', token)
-//       .send({ username: faker.internet.userName(), password: faker.internet.password(), url: faker.internet.url() })
-//       .end(function(err, res) {
-//          expect(res).to.have.status(200);
-//          expect(res).to.be.json;
-//          expect(res.body).to.have.property('message');
-//          expect(res.body.message).to.equal('Success Update a Password');
-//          expect(res.body).to.have.property('data');
-//          done();
-//       })
-//   })
-//   it('Should Delete a Password', function(done) {
-//     chai.request(app)
-//       .del(`/passwords/${passwordId}`)
-//       .set('token', token)
-//       .end(function(err, res) {
-//          expect(res).to.have.status(200);
-//          expect(res).to.be.json;
-//          expect(res.body).to.have.property('message');
-//          expect(res.body.message).to.equal('Success Delete a Password');
-//          expect(res.body).to.have.property('data');
-//          done();
-//       })
-//   })
-//   it('Should Give error when delete a Password without auth', function(done) {
-//     chai.request(app)
-//       .del(`/passwords/${passwordId}`)
-//       .end(function(err, res) {
-//          expect(res).to.have.status(403);
-//          expect(res).to.be.json;
-//          expect(res.body).to.have.property('message');
-//          expect(res.body.message).to.equal('Invalid Token');
-//          done();
-//       })
-//   })
-// })
+var kategoritransaksiId
+describe('Kategori Transaksi Crud', function() {
+  it('Should create new Kategori Transaksi', function(done) {
+    chai.request(app)
+      .post('/kategori-transaksi')
+      .set('token', token)
+      .set('otoritas','create_kategori_transaksi')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Kategori Transaksi');
+         expect(res.body).to.have.property('data');
+         kategoritransaksiId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Kategori Transaksi without auth', function(done) {
+    chai.request(app)
+      .post('/kategori-transaksi')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Kategori Transaksi', function(done) {
+    chai.request(app)
+      .put(`/kategori-transaksi/${kategoritransaksiId}`)
+      .set('token', token)
+      .set('otoritas','edit_kategori_transaksi')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Kategori Transaksi');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a KategoriTransaksi', function(done) {
+    chai.request(app)
+      .del(`/kategori-transaksi/${kategoritransaksiId}`)
+      .set('token', token)
+      .set('otoritas','delete_kategori_transaksi')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Kategori Transaksi');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a KategoriTransaksi without auth', function(done) {
+    chai.request(app)
+      .del(`/kategori-transaksi/${kategoritransaksiId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})
+
+var kategoriprodukId
+describe('Kategori Transaksi Crud', function() {
+  it('Should create new Kategori Produk', function(done) {
+    chai.request(app)
+      .post('/kategori-produk')
+      .set('token', token)
+      .set('otoritas','create_kategori_produk')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Kategori Produk');
+         expect(res.body).to.have.property('data');
+         kategoriprodukId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Kategori Produk without auth', function(done) {
+    chai.request(app)
+      .post('/kategori-produk')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Kategori Produk', function(done) {
+    chai.request(app)
+      .put(`/kategori-produk/${kategoriprodukId}`)
+      .set('token', token)
+      .set('otoritas','edit_kategori_produk')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Kategori Produk');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a KategoriProduk', function(done) {
+    chai.request(app)
+      .del(`/kategori-produk/${kategoriprodukId}`)
+      .set('token', token)
+      .set('otoritas','delete_kategori_produk')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Kategori Produk');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Kategori Produk without auth', function(done) {
+    chai.request(app)
+      .del(`/kategori-produk/${kategoriprodukId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})
+
+var poliId
+describe('Poli Crud', function() {
+  it('Should create new Poli', function(done) {
+    chai.request(app)
+      .post('/poli')
+      .set('token', token)
+      .set('otoritas','create_poli')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Poli');
+         expect(res.body).to.have.property('data');
+         poliId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Poli without auth', function(done) {
+    chai.request(app)
+      .post('/poli')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Poli', function(done) {
+    chai.request(app)
+      .put(`/poli/${poliId}`)
+      .set('token', token)
+      .set('otoritas','edit_poli')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Poli');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Poli', function(done) {
+    chai.request(app)
+      .del(`/poli/${poliId}`)
+      .set('token', token)
+      .set('otoritas','delete_poli')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Poli');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Poli without auth', function(done) {
+    chai.request(app)
+      .del(`/poli/${poliId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})

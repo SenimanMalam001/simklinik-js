@@ -8,6 +8,9 @@ const bodyParser = require('body-parser');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const otoritas = require('./routes/otoritas');
+const kategoritransaksi = require('./routes/kategoritransaksi');
+const kategoriproduk = require('./routes/kategoriproduk');
+const poli = require('./routes/poli');
 
 const app = express();
 
@@ -23,6 +26,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/otoritas', otoritas);
+app.use('/kategori-transaksi', kategoritransaksi);
+app.use('/kategori-produk', kategoriproduk);
+app.use('/poli', poli);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
