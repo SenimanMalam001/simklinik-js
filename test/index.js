@@ -665,3 +665,75 @@ describe('Penjamin Crud', function() {
       })
   })
 })
+
+var supplierId
+describe('Supplier Crud', function() {
+  it('Should create new Supplier', function(done) {
+    chai.request(app)
+      .post('/supplier')
+      .set('token', token)
+      .set('otoritas','create_supplier')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Supplier');
+         expect(res.body).to.have.property('data');
+         supplierId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Supplier without auth', function(done) {
+    chai.request(app)
+      .post('/supplier')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Supplier', function(done) {
+    chai.request(app)
+      .put(`/supplier/${supplierId}`)
+      .set('token', token)
+      .set('otoritas','edit_supplier')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Supplier');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Supplier', function(done) {
+    chai.request(app)
+      .del(`/supplier/${supplierId}`)
+      .set('token', token)
+      .set('otoritas','delete_supplier')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Supplier');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Supplier without auth', function(done) {
+    chai.request(app)
+      .del(`/supplier/${supplierId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})

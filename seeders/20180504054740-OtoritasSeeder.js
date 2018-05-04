@@ -213,6 +213,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_supplier',
+      display_name: 'Lihat Supplier',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_supplier',
+      display_name: 'Buat Supplier',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_supplier',
+      display_name: 'Ubah Supplier',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_supplier',
+      display_name: 'Hapus Supplier',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
