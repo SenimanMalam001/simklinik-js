@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const { auth, otoritas} = require('../middlewares/auth')
-const { signin,index, create, update, destroy} = require('../controllers/UserController')
+const { signin, index, create, update, destroy} = require('../controllers/UserController')
 
 router.get('/', auth, otoritas, index);
 router.post('/', auth, otoritas, create);

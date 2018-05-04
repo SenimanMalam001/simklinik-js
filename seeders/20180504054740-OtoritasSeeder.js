@@ -28,8 +28,20 @@ module.exports = {
       updatedAt: new Date(),
     },
     {
-      name: 'otoritas_user',
+      name: 'edit_otoritas_user',
       display_name: 'Ubah Otoritas User',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'get_otoritas',
+      display_name: 'Lihat Otoritas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'get_otoritas_user',
+      display_name: 'Lihat Otoritas User',
       createdAt: new Date(),
       updatedAt: new Date(),
     },

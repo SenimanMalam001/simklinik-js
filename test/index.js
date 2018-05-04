@@ -38,6 +38,20 @@ describe('User Signin ', () => {
 })
 var userId
 describe('User Crud', function() {
+  it('Should return all user', function(done) {
+    chai.request(app)
+      .get('/users')
+      .set('token', token)
+      .set('otoritas', 'get_user')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Retrieve All Users');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
   it('Should create new user', function(done) {
     chai.request(app)
       .post('/users')
@@ -116,6 +130,38 @@ describe('User Crud', function() {
       })
   })
 })
+
+describe('Otoritas Management', function() {
+  it('Should return all otoritas', function(done) {
+    chai.request(app)
+      .get('/otoritas')
+      .set('token', token)
+      .set('otoritas', 'get_otoritas')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Read Otoritas');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+
+  it('Should return otoritas user', function(done) {
+    chai.request(app)
+      .get('/otoritas/user/1')
+      .set('token', token)
+      .set('otoritas', 'get_otoritas_user')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Read Otoritas User');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+});
 // var passwordId
 // describe('Password Management', function() {
 //   it('Should create new Password', function(done) {
