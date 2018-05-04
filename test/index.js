@@ -521,3 +521,75 @@ describe('Ruangan Crud', function() {
       })
   })
 })
+
+var kasId
+describe('Kas Crud', function() {
+  it('Should create new Kas', function(done) {
+    chai.request(app)
+      .post('/kas')
+      .set('token', token)
+      .set('otoritas','create_kas')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Kas');
+         expect(res.body).to.have.property('data');
+         kasId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Kas without auth', function(done) {
+    chai.request(app)
+      .post('/kas')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Kas', function(done) {
+    chai.request(app)
+      .put(`/kas/${kasId}`)
+      .set('token', token)
+      .set('otoritas','edit_kas')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Kas');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Kas', function(done) {
+    chai.request(app)
+      .del(`/kas/${kasId}`)
+      .set('token', token)
+      .set('otoritas','delete_kas')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Kas');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Kas without auth', function(done) {
+    chai.request(app)
+      .del(`/kas/${kasId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})

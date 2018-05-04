@@ -165,6 +165,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_kas',
+      display_name: 'Lihat Kas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_kas',
+      display_name: 'Buat Kas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_kas',
+      display_name: 'Ubah Kas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_kas',
+      display_name: 'Hapus Kas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
