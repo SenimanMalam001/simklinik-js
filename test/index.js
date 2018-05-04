@@ -449,3 +449,75 @@ describe('Satuan Crud', function() {
       })
   })
 })
+
+var ruanganId
+describe('Ruangan Crud', function() {
+  it('Should create new Ruangan', function(done) {
+    chai.request(app)
+      .post('/ruangan')
+      .set('token', token)
+      .set('otoritas','create_ruangan')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Ruangan');
+         expect(res.body).to.have.property('data');
+         ruanganId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Ruangan without auth', function(done) {
+    chai.request(app)
+      .post('/ruangan')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Ruangan', function(done) {
+    chai.request(app)
+      .put(`/ruangan/${ruanganId}`)
+      .set('token', token)
+      .set('otoritas','edit_ruangan')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Ruangan');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Ruangan', function(done) {
+    chai.request(app)
+      .del(`/ruangan/${ruanganId}`)
+      .set('token', token)
+      .set('otoritas','delete_ruangan')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Ruangan');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Ruangan without auth', function(done) {
+    chai.request(app)
+      .del(`/ruangan/${ruanganId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})

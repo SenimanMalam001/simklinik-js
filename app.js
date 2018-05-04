@@ -12,6 +12,7 @@ const kategoritransaksi = require('./routes/kategoritransaksi');
 const kategoriproduk = require('./routes/kategoriproduk');
 const poli = require('./routes/poli');
 const satuan = require('./routes/satuan');
+const ruangan = require('./routes/ruangan');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/kategori-transaksi', kategoritransaksi);
 app.use('/kategori-produk', kategoriproduk);
 app.use('/poli', poli);
 app.use('/satuan', satuan);
+app.use('/ruangan', ruangan);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

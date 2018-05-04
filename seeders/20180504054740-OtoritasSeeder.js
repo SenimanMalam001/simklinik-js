@@ -141,6 +141,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_ruangan',
+      display_name: 'Lihat Ruangan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_ruangan',
+      display_name: 'Buat Ruangan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_ruangan',
+      display_name: 'Ubah Ruangan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_ruangan',
+      display_name: 'Hapus Ruangan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
