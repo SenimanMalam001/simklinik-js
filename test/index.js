@@ -36,6 +36,86 @@ describe('User Signin ', () => {
     })
   })
 })
+var userId
+describe('User Crud', function() {
+  it('Should create new user', function(done) {
+    chai.request(app)
+      .post('/users')
+      .set('token', token)
+      .set('otoritas', 'create_user')
+      .send({
+        username: faker.internet.userName(),
+        password: faker.internet.password(),
+        name: faker.name.firstName() })
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create User');
+         expect(res.body).to.have.property('data');
+         userId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create user without auth', function(done) {
+    chai.request(app)
+      .post('/users')
+      .send({
+        username: faker.internet.userName(),
+        password: faker.internet.password(),
+        name: faker.name.firstName() })
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update User', function(done) {
+    chai.request(app)
+      .put(`/users/${userId}`)
+      .set('token', token)
+      .set('otoritas', 'edit_user')
+      .send({
+        username: faker.internet.userName(),
+        password: faker.internet.password(),
+        name: faker.name.firstName() })
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update User');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete User', function(done) {
+    chai.request(app)
+      .del(`/users/${userId}`)
+      .set('token', token)
+      .set('otoritas', 'delete_user')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete User');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Password without auth', function(done) {
+    chai.request(app)
+      .del(`/users/${userId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})
 // var passwordId
 // describe('Password Management', function() {
 //   it('Should create new Password', function(done) {
