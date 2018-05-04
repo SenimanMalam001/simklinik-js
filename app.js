@@ -11,6 +11,7 @@ const otoritas = require('./routes/otoritas');
 const kategoritransaksi = require('./routes/kategoritransaksi');
 const kategoriproduk = require('./routes/kategoriproduk');
 const poli = require('./routes/poli');
+const satuan = require('./routes/satuan');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/otoritas', otoritas);
 app.use('/kategori-transaksi', kategoritransaksi);
 app.use('/kategori-produk', kategoriproduk);
 app.use('/poli', poli);
+app.use('/satuan', satuan);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

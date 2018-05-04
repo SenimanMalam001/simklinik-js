@@ -117,6 +117,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_satuan',
+      display_name: 'Lihat Satuan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_satuan',
+      display_name: 'Buat Satuan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_satuan',
+      display_name: 'Ubah Satuan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_satuan',
+      display_name: 'Hapus Satuan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

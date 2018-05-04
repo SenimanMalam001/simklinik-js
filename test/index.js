@@ -377,3 +377,75 @@ describe('Poli Crud', function() {
       })
   })
 })
+
+var satuanId
+describe('Satuan Crud', function() {
+  it('Should create new Satuan', function(done) {
+    chai.request(app)
+      .post('/satuan')
+      .set('token', token)
+      .set('otoritas','create_satuan')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Satuan');
+         expect(res.body).to.have.property('data');
+         satuanId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Satuan without auth', function(done) {
+    chai.request(app)
+      .post('/satuan')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Satuan', function(done) {
+    chai.request(app)
+      .put(`/satuan/${satuanId}`)
+      .set('token', token)
+      .set('otoritas','edit_satuan')
+      .send({ name: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Satuan');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Satuan', function(done) {
+    chai.request(app)
+      .del(`/satuan/${satuanId}`)
+      .set('token', token)
+      .set('otoritas','delete_satuan')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Satuan');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Satuan without auth', function(done) {
+    chai.request(app)
+      .del(`/satuan/${satuanId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})
