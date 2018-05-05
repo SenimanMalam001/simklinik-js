@@ -285,6 +285,12 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'edit_profil',
+      display_name: 'Ubah Profil',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

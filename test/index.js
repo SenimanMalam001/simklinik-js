@@ -881,3 +881,21 @@ describe('Pasien Crud', function() {
       })
   })
 })
+
+describe('Profil Management', function() {
+  it('Should Update Profil', function(done) {
+    chai.request(app)
+      .put(`/profil/`)
+      .set('token', token)
+      .set('otoritas','edit_profil')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Profil');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+})
