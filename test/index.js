@@ -899,3 +899,75 @@ describe('Profil Management', function() {
       })
   })
 })
+
+var komisiId
+describe('Komisi Crud', function() {
+  it('Should create new Komisi', function(done) {
+    chai.request(app)
+      .post('/komisi')
+      .set('token', token)
+      .set('otoritas','create_komisi')
+      .send({ produk: 1, user: 1, jumlah: 2000})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Komisi');
+         expect(res.body).to.have.property('data');
+         komisiId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Komisi without auth', function(done) {
+    chai.request(app)
+      .post('/komisi')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Komisi', function(done) {
+    chai.request(app)
+      .put(`/komisi/${komisiId}`)
+      .set('token', token)
+      .set('otoritas','edit_komisi')
+      .send({ produk: 1, user: 1, jumlah: 3000})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Komisi');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Komisi', function(done) {
+    chai.request(app)
+      .del(`/komisi/${komisiId}`)
+      .set('token', token)
+      .set('otoritas','delete_komisi')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Komisi');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Komisi without auth', function(done) {
+    chai.request(app)
+      .del(`/komisi/${komisiId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})

@@ -291,6 +291,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_komisi',
+      display_name: 'Lihat Komisi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_komisi',
+      display_name: 'Buat Komisi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_komisi',
+      display_name: 'Ubah Komisi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_komisi',
+      display_name: 'Hapus Komisi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
