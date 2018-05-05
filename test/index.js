@@ -809,3 +809,75 @@ describe('Produk Crud', function() {
       })
   })
 })
+
+var pasienId
+describe('Pasien Crud', function() {
+  it('Should create new Pasien', function(done) {
+    chai.request(app)
+      .post('/pasien')
+      .set('token', token)
+      .set('otoritas','create_pasien')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Pasien');
+         expect(res.body).to.have.property('data');
+         pasienId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Pasien without auth', function(done) {
+    chai.request(app)
+      .post('/pasien')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Pasien', function(done) {
+    chai.request(app)
+      .put(`/pasien/${pasienId}`)
+      .set('token', token)
+      .set('otoritas','edit_pasien')
+      .send({ nama: faker.internet.userName()})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Pasien');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Pasien', function(done) {
+    chai.request(app)
+      .del(`/pasien/${pasienId}`)
+      .set('token', token)
+      .set('otoritas','delete_pasien')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Pasien');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Pasien without auth', function(done) {
+    chai.request(app)
+      .del(`/pasien/${pasienId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})

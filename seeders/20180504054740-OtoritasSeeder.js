@@ -261,6 +261,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_pasien',
+      display_name: 'Lihat Pasien',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_pasien',
+      display_name: 'Buat Pasien',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_pasien',
+      display_name: 'Ubah Pasien',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_pasien',
+      display_name: 'Hapus Pasien',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

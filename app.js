@@ -17,6 +17,7 @@ const kas = require('./routes/kas');
 const penjamin = require('./routes/penjamin');
 const supplier = require('./routes/supplier');
 const produk = require('./routes/produk');
+const pasien = require('./routes/pasien');
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/kas', kas);
 app.use('/penjamin', penjamin);
 app.use('/supplier', supplier);
 app.use('/produk', produk);
+app.use('/pasien', pasien);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
