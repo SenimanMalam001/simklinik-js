@@ -2,6 +2,34 @@ const models = require('../models');
 const Op = require('sequelize').Op
 
 module.exports = {
+  search: (req,res) => {
+    const { no_rm, nama, tanggal_lahir } = req.body
+    models.Pasien.find({
+      where: {
+        [Op.or]: [
+          { no_rm: {
+            [Op.eq]: no_rm
+          }},
+          { nama: {
+            [Op.like]: `${nama}%`
+          }},
+          { tanggal_lahir: {
+            [Op.eq]: tanggal_lahir
+          }},
+        ]
+      }
+    }).then(pasien => {
+      res.status(200).json({
+        message: 'Success Search Pasien',
+        data: pasien
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+
+  },
   index: (req,res) => {
     models.Pasien.all().then(pasien => {
       res.status(200).json({
