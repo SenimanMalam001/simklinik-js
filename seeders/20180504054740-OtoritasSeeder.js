@@ -315,6 +315,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_registrasi',
+      display_name: 'Lihat Komisi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_registrasi',
+      display_name: 'Buat Komisi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_registrasi',
+      display_name: 'Ubah Komisi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_registrasi',
+      display_name: 'Hapus Komisi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

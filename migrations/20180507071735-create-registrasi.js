@@ -1,0 +1,49 @@
+'use strict';
+module.exports = {
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('Registrasis', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      no_reg: {
+        type: Sequelize.STRING
+      },
+      pasien: {
+        type: Sequelize.INTEGER
+      },
+      penjamin: {
+        type: Sequelize.INTEGER
+      },
+      poli: {
+        type: Sequelize.INTEGER
+      },
+      dokter: {
+        type: Sequelize.INTEGER
+      },
+      ruangan: {
+        type: Sequelize.INTEGER
+      },
+      status_registrasi: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      jenis_registrasi: {
+        type: Sequelize.STRING
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+  },
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('Registrasis');
+  }
+};

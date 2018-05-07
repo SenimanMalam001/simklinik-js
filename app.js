@@ -20,6 +20,7 @@ const produk = require('./routes/produk');
 const pasien = require('./routes/pasien');
 const profil = require('./routes/profil');
 const komisi = require('./routes/komisi');
+const registrasi = require('./routes/registrasi');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/produk', produk);
 app.use('/pasien', pasien);
 app.use('/profil', profil);
 app.use('/komisi', komisi);
+app.use('/registrasi', registrasi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -971,3 +971,75 @@ describe('Komisi Crud', function() {
       })
   })
 })
+
+var registrasiId
+describe('Registrasi Crud', function() {
+  it('Should create new Registrasi', function(done) {
+    chai.request(app)
+      .post('/registrasi')
+      .set('token', token)
+      .set('otoritas','create_registrasi')
+      .send({ pasien: 1, penjamin: 1, dokter: 1,poli: 1, jenis_registrasi: 'rawat_jalan', ruangan: 1})
+      .end(function(err, res) {
+         expect(res).to.have.status(201);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Create Registrasi');
+         expect(res.body).to.have.property('data');
+         registrasiId = res.body.data.id
+         done();
+      })
+  })
+  it('Should Give error when create new Registrasi without auth', function(done) {
+    chai.request(app)
+      .post('/registrasi')
+      .send({ pasien: 1, penjamin: 1, dokter: 1,poli: 1, jenis_registrasi: 'rawat_jalan', ruangan: 1})
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+  it('Should Update Registrasi', function(done) {
+    chai.request(app)
+      .put(`/registrasi/${registrasiId}`)
+      .set('token', token)
+      .set('otoritas','edit_registrasi')
+      .send({ pasien: 1, penjamin: 1, dokter: 1,poli: 1, jenis_registrasi: 'rawat_jalan', ruangan: 1, status_registrasi: 1})
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Update Registrasi');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Delete a Registrasi', function(done) {
+    chai.request(app)
+      .del(`/registrasi/${registrasiId}`)
+      .set('token', token)
+      .set('otoritas','delete_registrasi')
+      .end(function(err, res) {
+         expect(res).to.have.status(200);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Success Delete Registrasi');
+         expect(res.body).to.have.property('data');
+         done();
+      })
+  })
+  it('Should Give error when delete a Registrasi without auth', function(done) {
+    chai.request(app)
+      .del(`/registrasi/${registrasiId}`)
+      .end(function(err, res) {
+         expect(res).to.have.status(403);
+         expect(res).to.be.json;
+         expect(res.body).to.have.property('message');
+         expect(res.body.message).to.equal('Invalid Token');
+         done();
+      })
+  })
+})
