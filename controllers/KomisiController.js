@@ -1,13 +1,81 @@
 const models = require('../models');
+const Op = require('sequelize').Op
 
 module.exports = {
-  index: (req,res) => {
-    models.Komisi.all().then(penjamin => {
+  find: (req,res) => {
+    const { id } = req.params
+    models.Komisi.findOne({
+      where: {
+        id: id
+      }
+    }).then(user => {
       res.status(200).json({
         message: 'Success Read Komisi',
-        data: penjamin
+        data: user
       })
     }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+
+  },
+  index: (req,res) => {
+    let { q, page } = req.query
+    if (!q) {
+      q = ''
+    }
+    if (!page) {
+      page = 1
+    }
+    let pagination
+    let limit = 10
+    let offset = 0
+    models.Komisi.count({
+    }).then(count => {
+      let pages = Math.ceil(count / limit)
+      offset = limit * (page - 1)
+      pagination = {
+        limit,
+        offset,
+        pages,
+        page
+      }
+      return pagination
+    }).then(pagination => {
+      const { limit, offset} = pagination
+      return models.Komisi.all({
+        limit,
+        offset,
+        include: [
+          {
+            model: models.User,
+          },
+          {
+            model: models.Produk,
+            where: { nama: { [Op.like]: `%${q}%`}}
+          }
+        ]
+      })
+    }).then(data => {
+      const { pages } = pagination
+      let userProduk = []
+      data.forEach(data => {
+        userProduk.push({
+          id: data.id,
+          user: data.User.name,
+          produk: data.Produk.nama
+        })
+      })
+      res.status(200).json({
+        message: 'Success Read Komisi',
+        data: {
+          data: userProduk,
+          pages
+        }
+      })
+    }).catch((err) => {
+      console.log(err);
       res.status(500).json({
         message: 'Something Went Wrong'
       })
@@ -20,7 +88,6 @@ module.exports = {
       produk,
       user,
       jumlah,
-      
     }).then((penjamin) => {
       res.status(201).json({
         message: 'Success Create Komisi',
@@ -43,7 +110,7 @@ module.exports = {
           produk,
           user,
           jumlah,
-          
+
         }).then((updatedRuangan) => {
           res.status(200).json({
             message: 'Success Update Komisi',

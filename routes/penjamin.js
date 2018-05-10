@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { auth, otoritas} = require('../middlewares/auth')
-const { index, create, update, destroy} = require('../controllers/PenjaminController')
+const { find, index, create, update, destroy} = require('../controllers/PenjaminController')
 
+router.get('/:id', auth, otoritas, find);
 router.get('/', auth, otoritas, index);
 router.post('/', auth, otoritas, create);
 router.put('/:id', auth, otoritas, update);

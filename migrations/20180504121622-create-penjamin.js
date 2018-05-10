@@ -9,7 +9,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nama: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
       alamat: {
         type: Sequelize.STRING
@@ -18,7 +20,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       level: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

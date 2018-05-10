@@ -1,12 +1,13 @@
 const models = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Op = require('sequelize').Op
 
 module.exports = {
-  index: (req,res) => {
+  all: (req,res) => {
     models.User.all().then(user => {
       res.status(200).json({
-        message: 'Success Retrieve All Users',
+        message: 'Success Read User',
         data: user
       })
     }).catch((err) => {
@@ -16,28 +17,118 @@ module.exports = {
     })
 
   },
+  find: (req,res) => {
+    const { id } = req.params
+    models.User.findOne({
+      where: {
+        id: id
+      }
+    }).then(user => {
+      res.status(200).json({
+        message: 'Success Read User',
+        data: user
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+
+  },
+  index: (req,res) => {
+    let { q, page } = req.query
+    if (!q) {
+      q = ''
+    }
+    if (!page) {
+      page = 1
+    }
+    let pagination
+    let limit = 10
+    let offset = 0
+    models.User.count({
+        where: {
+          [Op.or]: [
+            { username: {
+              [Op.like]: `%${q}%`
+            }},
+            { name: {
+              [Op.like]: `%${q}%`
+            }},
+          ]
+        },
+    }).then((count) => {
+      let pages = Math.ceil(count / limit)
+      offset = limit * (page - 1)
+      pagination = {
+        limit,
+        offset,
+        pages,
+        page
+      }
+      return pagination
+    }).then(pagination => {
+      const { limit, offset} = pagination
+      return  models.User.all({
+        where: {
+          [Op.or]: [
+            { username: {
+              [Op.like]: `%${q}%`
+            }},
+            { name: {
+              [Op.like]: `%${q}%`
+            }},
+          ]
+        },
+        limit,
+        offset
+      })
+    }).then(data => {
+      const { pages } = pagination
+      res.status(200).json({
+        message: 'Success Retrieve All Users',
+        data: {
+          data,
+          pages
+        }
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+
+  },
   create: (req, res) => {
-    const { username, password, name} = req.body
+    const { username, password, name, role} = req.body
     const hashPassword = bcrypt.hashSync(password, 10);
     models.User.create({
       username,
       password: hashPassword,
-      name
+      name,
+      role
     }).then((user) => {
       res.status(201).json({
         message: 'Success Create User',
         data: user
       })
     }).catch((err) => {
-      res.status(500).json({
-        message: 'Something Went Wrong',
-      })
+      if (err.errors[0].message) {
+        const message = err.errors[0].message
+        res.status(403).json({
+          message: message,
+        })
+      } else {
+        res.status(500).json({
+          message: 'Something Went Wrong',
+        })
+      }
     })
 
   },
   update: (req, res) => {
     const { id } = req.params
-    const { username, password, name} = req.body
+    const { username, password, name, role} = req.body
     const hashPassword = bcrypt.hashSync(password, 10);
     models.User.findOne({
       where: { id: id}
@@ -46,16 +137,24 @@ module.exports = {
         user.update({
           username,
           password: hashPassword,
-          name
+          name,
+          role
         }).then((updatedUser) => {
           res.status(200).json({
             message: 'Success Update User',
             data: user
           })
         }).catch((err) => {
-          res.status(500).json({
-            message: 'Something Went Wrong',
-          })
+          if (err.errors[0].message) {
+            const message = err.errors[0].message
+            res.status(403).json({
+              message: message,
+            })
+          } else {
+            res.status(500).json({
+              message: 'Something Went Wrong',
+            })
+          }
         })
       } else {
         res.status(404).json({
@@ -63,9 +162,16 @@ module.exports = {
         })
       }
     }).catch((err) => {
-      res.status(500).json({
-        message: 'Something Went Wrong',
-      })
+      if (err.errors[0].message) {
+        const message = err.errors[0].message
+        res.status(403).json({
+          message: message,
+        })
+      } else {
+        res.status(500).json({
+          message: 'Something Went Wrong',
+        })
+      }
     })
   },
   destroy: (req, res) => {

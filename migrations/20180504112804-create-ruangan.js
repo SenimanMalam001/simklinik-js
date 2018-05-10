@@ -9,10 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       kode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       nama: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       jumlah: {
         type: Sequelize.INTEGER

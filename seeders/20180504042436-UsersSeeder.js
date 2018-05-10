@@ -9,6 +9,7 @@ module.exports = {
       name: 'admin',
       username: 'admin',
       password: password,
+      role: 'admin',
       createdAt: new Date(),
       updatedAt: new Date(),
     }], {});

@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Komisi.associate = function(models) {
     // associations can be defined here
+    Komisi.belongsTo(models.User, { foreignKey: 'user' })
+    Komisi.belongsTo(models.Produk, { foreignKey: 'produk'})
   };
+
   return Komisi;
 };

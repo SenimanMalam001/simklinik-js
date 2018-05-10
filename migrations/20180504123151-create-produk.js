@@ -9,25 +9,32 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       kode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       nama: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       tipe: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       harga_beli: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       harga_jual_1: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       harga_jual_2: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       harga_jual_3: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,
