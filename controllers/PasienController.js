@@ -2,6 +2,37 @@ const models = require('../models');
 const Op = require('sequelize').Op
 
 module.exports = {
+  all: (req,res) => {
+    models.Pasien.all().then(user => {
+      res.status(200).json({
+        message: 'Success Read Pasien',
+        data: user
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+
+  },
+  find: (req,res) => {
+    const { id } = req.params
+    models.Pasien.findOne({
+      where: {
+        id: id
+      }
+    }).then(user => {
+      res.status(200).json({
+        message: 'Success Read Pasien',
+        data: user
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+
+  },
   search: (req,res) => {
     const { no_rm, nama, tanggal_lahir } = req.body
     models.Pasien.find({
@@ -31,12 +62,70 @@ module.exports = {
 
   },
   index: (req,res) => {
-    models.Pasien.all().then(pasien => {
+    let { q, page } = req.query
+    if (!q) {
+      q = ''
+    }
+    if (!page) {
+      page = 1
+    }
+    let pagination
+    let limit = 10
+    let offset = 0
+    models.Pasien.count({
+      where: {
+        [Op.or]: [
+          { no_rm: {
+            [Op.like]: `%${q}%`
+          }},
+          { nama: {
+            [Op.like]: `%${q}%`
+          }},
+          { tanggal_lahir: {
+            [Op.like]: `%${q}%`
+          }},
+        ]
+      }
+    }).then(count => {
+      let pages = Math.ceil(count / limit)
+      offset = limit * (page - 1)
+      pagination = {
+        limit,
+        offset,
+        pages,
+        page
+      }
+      return pagination
+    }).then( pagination => {
+      const { limit, offset} = pagination
+      return models.Pasien.all({
+      where: {
+        [Op.or]: [
+          { no_rm: {
+            [Op.like]: `%${q}%`
+          }},
+          { nama: {
+            [Op.like]: `%${q}%`
+          }},
+          { tanggal_lahir: {
+            [Op.like]: `%${q}%`
+          }},
+        ]
+      },
+      limit,
+      offset
+    })
+    }).then(data => {
+      const { pages } = pagination
       res.status(200).json({
         message: 'Success Read Pasien',
-        data: pasien
+        data: {
+          data,
+          pages
+        }
       })
     }).catch((err) => {
+      console.log(err)
       res.status(500).json({
         message: 'Something Went Wrong'
       })

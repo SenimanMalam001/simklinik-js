@@ -10,12 +10,15 @@ module.exports = {
       },
       no_rm: {
         type: Sequelize.STRING,
+        unique: true
       },
       nama: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       gender: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       tanggal_lahir: {
         type: Sequelize.STRING
@@ -27,7 +30,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       penjamin: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
