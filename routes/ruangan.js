@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { auth, otoritas} = require('../middlewares/auth')
-const { find, index, create, update, destroy} = require('../controllers/RuanganController')
+const { all, find, index, create, update, destroy} = require('../controllers/RuanganController')
 
+router.get('/all', auth, otoritas, all);
 router.get('/:id', auth, otoritas, find);
 router.get('/', auth, otoritas, index);
 router.post('/', auth, otoritas, create);

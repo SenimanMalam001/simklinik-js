@@ -8,8 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      registrasi: {
-        type: Sequelize.INTEGER
+      no_reg: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       sistole_diastole: {
         type: Sequelize.STRING

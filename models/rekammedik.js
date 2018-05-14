@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var RekamMedik = sequelize.define('RekamMedik', {
-    registrasi: DataTypes.INTEGER,
+    no_reg: DataTypes.STRING,
     sistole_diastole: DataTypes.STRING,
     frekuensi_pernapasan: DataTypes.STRING,
     suhu: DataTypes.STRING,

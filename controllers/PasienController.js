@@ -1,9 +1,11 @@
 const models = require('../models');
 const Op = require('sequelize').Op
+const { caching } = require('../middlewares/redis')
 
 module.exports = {
   all: (req,res) => {
     models.Pasien.all().then(user => {
+      caching('Pasien',user)
       res.status(200).json({
         message: 'Success Read Pasien',
         data: user
@@ -35,7 +37,7 @@ module.exports = {
   },
   search: (req,res) => {
     const { no_rm, nama, tanggal_lahir } = req.body
-    models.Pasien.find({
+    models.Pasien.findAll({
       where: {
         [Op.or]: [
           { no_rm: {

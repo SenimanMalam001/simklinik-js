@@ -12,7 +12,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       pasien: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING,
+        allowNull: false
       },
       penjamin: {
         type: Sequelize.INTEGER
@@ -21,7 +22,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       dokter: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       ruangan: {
         type: Sequelize.INTEGER

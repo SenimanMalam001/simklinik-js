@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Registrasi.associate = function(models) {
     // associations can be defined here
+    Registrasi.belongsTo(models.User, { foreignKey: 'dokter' })
+    Registrasi.belongsTo(models.Poli, { foreignKey: 'poli' })
+    Registrasi.belongsTo(models.Ruangan, { foreignKey: 'ruangan' })
+    Registrasi.belongsTo(models.Pasien, { foreignKey: 'pasien', targetKey: 'no_rm' })
+    Registrasi.belongsTo(models.Penjamin, { foreignKey: 'penjamin' })
   };
   Registrasi.afterCreate((registrasi) => {
     const { ruangan, id } = registrasi

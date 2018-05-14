@@ -2,11 +2,81 @@ const models = require('../models');
 const Op = require('sequelize').Op
 
 module.exports = {
-  index: (req,res) => {
-    models.Registrasi.all().then(registrasi => {
+  find: (req,res) => {
+    const { id } = req.params
+    models.Registrasi.findOne({
+      where: {
+        id: id
+      }
+    }).then(user => {
       res.status(200).json({
         message: 'Success Read Registrasi',
-        data: registrasi
+        data: user
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+
+  },
+  index: (req,res) => {
+    let { q, page } = req.query
+    if (!q) {
+      q = ''
+    }
+    if (!page) {
+      page = 1
+    }
+    let pagination
+    let limit = 10
+    let offset = 0
+    models.Registrasi.count({
+    }).then(count => {
+      let pages = Math.ceil(count / limit)
+      offset = limit * (page - 1)
+      pagination = {
+        limit,
+        offset,
+        pages,
+        page
+      }
+      return pagination
+    }).then(pagination => {
+      const { limit, offset} = pagination
+      return models.Registrasi.all({
+        include: [
+          {
+            model: models.Pasien
+          },
+          {
+            model: models.User
+          },
+          {
+            model: models.Poli
+          }
+        ],
+        limit,
+        offset
+      })
+    }).then(data => {
+      const { pages } = pagination
+      let registrasi = []
+      registrasi = data.map(data => {
+        return {
+          id: data.id,
+          no_rm: data.Pasien.no_rm,
+          nama: data.Pasien.nama,
+          dokter: data.User.name,
+          poli: data.Poli.display_name
+        }
+      })
+      res.status(200).json({
+        message: 'Success Read Registrasi',
+        data: {
+          data: registrasi,
+          pages
+        }
       })
     }).catch((err) => {
       res.status(500).json({
@@ -16,14 +86,24 @@ module.exports = {
 
   },
   create: (req, res) => {
-    const { pasien, penjamin, poli, dokter, jenis_registrasi, ruangan } = req.body
+    const {
+      pasien,
+      penjamin,
+      poli,
+      dokter,
+      jenis_registrasi,
+      ruangan,
+      suhu,
+      sistole_diastole,
+      tinggi_badan,
+      berat_badan,
+     } = req.body
     models.Registrasi.findAll({
         limit: 1,
         order: [['createdAt', 'DESC']]
     }).then((registrasi) => {
       if (registrasi.length) {
         const { no_reg } = registrasi[0]
-        console.log(no_reg)
         let new_no_reg = no_reg.split('-')
         new_no_reg = Number(new_no_reg[1]) + 1
         new_no_reg = `REG-${new_no_reg}`
@@ -42,9 +122,22 @@ module.exports = {
         ruangan
       })
     }).then((registrasi) => {
-        res.status(201).json({
-          message: 'Success Create Registrasi',
-          data: registrasi
+        models.RekamMedik.create({
+          no_reg: registrasi.no_reg,
+          suhu,
+          sistole_diastole,
+          tinggi_badan,
+          berat_badan
+        }).then(rekamMedik => {
+          res.status(201).json({
+            message: 'Success Create Registrasi',
+            data: registrasi
+          })
+        }).catch(err => {
+          console.log(err);
+          res.status(500).json({
+            message: 'Something Went Wrong',
+          })
         })
     }).catch((err) => {
       console.log(err)
