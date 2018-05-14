@@ -339,6 +339,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_item_masuk',
+      display_name: 'Lihat Item Masuk',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_item_masuk',
+      display_name: 'Buat Item Masuk',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_item_masuk',
+      display_name: 'Ubah Item Masuk',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_item_masuk',
+      display_name: 'Hapus Item Masuk',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
