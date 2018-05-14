@@ -363,6 +363,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_item_keluar',
+      display_name: 'Lihat Item Keluar',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_item_keluar',
+      display_name: 'Buat Item Keluar',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_item_keluar',
+      display_name: 'Ubah Item Keluar',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_item_keluar',
+      display_name: 'Hapus Item Keluar',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

@@ -23,6 +23,7 @@ const profil = require('./routes/profil');
 const komisi = require('./routes/komisi');
 const registrasi = require('./routes/registrasi');
 const itemmasuk = require('./routes/itemmasuk');
+const itemkeluar = require('./routes/itemkeluar');
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use('/profil', profil);
 app.use('/komisi', komisi);
 app.use('/registrasi', registrasi);
 app.use('/item-masuk', itemmasuk);
+app.use('/item-keluar', itemkeluar);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

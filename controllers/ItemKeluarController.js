@@ -4,13 +4,13 @@ const Op = require('sequelize').Op
 module.exports = {
   find: (req,res) => {
     const { id } = req.params
-    models.ItemMasuk.findOne({
+    models.ItemKeluar.findOne({
       where: {
         id: id
       }
     }).then(user => {
       res.status(200).json({
-        message: 'Success Read ItemMasuk',
+        message: 'Success Read Item Keluar',
         data: user
       })
     }).catch((err) => {
@@ -31,7 +31,7 @@ module.exports = {
     let pagination
     let limit = 10
     let offset = 0
-    models.ItemMasuk.count({
+    models.ItemKeluar.count({
     }).then(count => {
       let pages = Math.ceil(count / limit)
       offset = limit * (page - 1)
@@ -44,7 +44,7 @@ module.exports = {
       return pagination
     }).then(pagination => {
       const { limit, offset} = pagination
-      return models.ItemMasuk.all({
+      return models.ItemKeluar.all({
         where: {
           no_trans: { [Op.like]: `%${q}%`}
         },
@@ -58,9 +58,9 @@ module.exports = {
       })
     }).then(data => {
       const { pages } = pagination
-      let itemMasuk = []
+      let itemKeluar = []
       data.forEach(data => {
-        itemMasuk.push({
+        itemKeluar.push({
           id: data.id,
           no_trans: data.no_trans,
           produk: data.Produk.nama,
@@ -69,9 +69,9 @@ module.exports = {
         })
       })
       res.status(200).json({
-        message: 'Success Read ItemMasuk',
+        message: 'Success Read Item Keluar',
         data: {
-          data: itemMasuk,
+          data: itemKeluar,
           pages
         }
       })
@@ -85,29 +85,29 @@ module.exports = {
   },
   create: (req, res) => {
     const { produk, keterangan, jumlah } = req.body
-    models.ItemMasuk.findOne({
+    models.ItemKeluar.findOne({
         order: [['createdAt', 'DESC']]
-    }).then(itemMasuk => {
-      if (itemMasuk) {
-        let { no_trans } = itemMasuk
+    }).then(itemKeluar => {
+      if (itemKeluar) {
+        let { no_trans } = itemKeluar
         no_trans = no_trans.split('-')
         no_trans = Number(no_trans[1]) + 1
-        no_trans = `IM-${no_trans}`
+        no_trans = `IK-${no_trans}`
         return no_trans
       } else {
-        return 'IM-1'
+        return 'IK-1'
       }
     }).then(no_trans => {
-      return models.ItemMasuk.create({
+      return models.ItemKeluar.create({
         no_trans,
         produk,
         keterangan,
         jumlah,
       })
-    }).then((itemMasuk) => {
+    }).then((itemKeluar) => {
       res.status(201).json({
-        message: 'Success Create ItemMasuk',
-        data: itemMasuk
+        message: 'Success Create Item Keluar',
+        data: itemKeluar
       })
     }).catch((err) => {
       console.log(err);
@@ -119,7 +119,7 @@ module.exports = {
   update: (req, res) => {
     const { id } = req.params
     const { produk, keterangan, jumlah } = req.body
-    models.ItemMasuk.findOne({
+    models.ItemKeluar.findOne({
       where: { id: id}
     }).then((penjamin) => {
       if (penjamin) {
@@ -149,14 +149,14 @@ module.exports = {
   },
   destroy: (req, res) => {
     const { id } = req.params
-    models.ItemMasuk.findOne({
+    models.ItemKeluar.findOne({
       where: {
         id: id
       }
     }).then((penjamin) => {
       penjamin.destroy().then(() => {
         res.status(200).json({
-          message: 'Success Delete ItemMasuk',
+          message: 'Success Delete Item Keluar',
           data: penjamin
         })
       }).catch((err) => {
