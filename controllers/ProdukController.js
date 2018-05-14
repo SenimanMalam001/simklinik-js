@@ -1,9 +1,11 @@
 const models = require('../models');
 const Op = require('sequelize').Op
+const { caching } = require('../middlewares/redis')
 
 module.exports = {
   all: (req,res) => {
     models.Produk.all().then(produk => {
+      caching('Produk', produk)
       res.status(200).json({
         message: 'Success Read Produk',
         data: produk
