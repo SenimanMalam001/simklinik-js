@@ -1,5 +1,7 @@
 const models = require('../models');
 const Op = require('sequelize').Op
+var {uploadExcell} = require('../middlewares/upload')
+const xlsx = require('node-xlsx').default;
 
 module.exports = {
   find: (req,res) => {
@@ -82,26 +84,11 @@ module.exports = {
     })
 
   },
-  create: (req, res) => {
+  createStokAwal: (req, res) => {
     const { produk,  jumlah } = req.body
-    models.StokAwal.findOne({
-        order: [['createdAt', 'DESC']]
-    }).then(stokAwal => {
-      if (stokAwal) {
-        let { no_trans } = stokAwal
-        no_trans = no_trans.split('-')
-        no_trans = Number(no_trans[1]) + 1
-        no_trans = `SA-${no_trans}`
-        return no_trans
-      } else {
-        return 'SA-1'
-      }
-    }).then(no_trans => {
-      return models.StokAwal.create({
-        no_trans,
+    models.StokAwal.create({
         produk,
         jumlah,
-      })
     }).then((stokAwal) => {
       res.status(201).json({
         message: 'Success Create StokAwal',
@@ -113,6 +100,72 @@ module.exports = {
         message: 'Something Went Wrong',
       })
     })
+  },
+  create:  async (req, res, next) => {
+    uploadExcell(req, res, (err) => {
+      if (err) {
+        return res.status(500).json({ message: err})
+      }
+      if (!req.file) {
+        next()
+      } else {
+        const workSheetsFromFile = xlsx.parse(req.file.path);
+        const kode_produk = []
+        const importData = []
+        workSheetsFromFile[0].data.forEach(data => {
+          kode_produk.push(data[0])
+          importData.push({
+            jumlah: data[1],
+            produk: '',
+            no_trans:'',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          })
+        })
+        models.Produk.findAll({
+          where: {
+            kode: {
+              [Op.in]: kode_produk
+            }
+          }
+        }).then(produk => {
+          produk.forEach((data, index) => {
+            importData[index].produk = data.id
+          })
+          return importData
+        }).then(async (importData) => {
+          const stokAwal = await models.StokAwal.findOne({ order: [['id', 'DESC']]})
+          let nomor
+          if (stokAwal) {
+            console.log(stokAwal.no_trans,'============================');
+            let { no_trans } = stokAwal
+            no_trans = no_trans.split('-')
+            no_trans = Number(no_trans[1]) + 1
+            nomor = no_trans
+          } else {
+            nomor = 1
+          }
+          importData.forEach((data, index) => {
+            importData[index].no_trans = `SA-${nomor++}`
+          })
+
+          console.log(importData,'==============================');
+
+          return models.StokAwal.bulkCreate(importData)
+        }).then((data) => {
+          res.status(201).json({
+            message: 'Success Create StokAwal',
+            data: data
+          })
+        }).catch(err => {
+          console.log(err);
+          res.status(500).json({
+            message: 'Something Went Wrong',
+          })
+        })
+      }
+    })
+
   },
   update: (req, res) => {
     const { id } = req.params

@@ -9,10 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       no_trans: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       produk: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       masuk: {
         type: Sequelize.INTEGER,
@@ -23,7 +25,8 @@ module.exports = {
         defaultValue: 0
       },
       jenis_transaksi: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

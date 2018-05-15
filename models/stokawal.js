@@ -4,11 +4,28 @@ module.exports = (sequelize, DataTypes) => {
     no_trans: DataTypes.STRING,
     produk: DataTypes.INTEGER,
     jumlah: DataTypes.INTEGER
-  }, {});
-  StokAwal.associate = function(models) {
+  }, {
+  });
+  StokAwal.associate =  function(models) {
     // associations can be defined here
     StokAwal.belongsTo(models.Produk, { foreignKey: 'produk' })
   };
+  StokAwal.beforeCreate(async (item, options) => {
+    try {
+      const stokAwal = await StokAwal.findOne({ order: [['createdAt', 'DESC']]})
+      if (stokAwal) {
+        let { no_trans } = stokAwal
+        no_trans = no_trans.split('-')
+        no_trans = Number(no_trans[1]) + 1
+        no_trans = `SA-${no_trans}`
+        return item.no_trans = no_trans
+      } else {
+        return item.no_trans = 'SA-1'
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
   StokAwal.afterCreate((item) => {
     const { no_trans, produk, jumlah} = item
     sequelize.models.Persediaan.create({
