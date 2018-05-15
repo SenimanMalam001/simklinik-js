@@ -387,6 +387,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_stok_awal',
+      display_name: 'Lihat Stok Awal',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_stok_awal',
+      display_name: 'Buat Stok Awal',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_stok_awal',
+      display_name: 'Ubah Stok Awal',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_stok_awal',
+      display_name: 'Hapus Stok Awal',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
