@@ -25,6 +25,7 @@ const registrasi = require('./routes/registrasi');
 const itemmasuk = require('./routes/itemmasuk');
 const itemkeluar = require('./routes/itemkeluar');
 const stokawal = require('./routes/stokawal');
+const stokopname = require('./routes/stokopname');
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use('/registrasi', registrasi);
 app.use('/item-masuk', itemmasuk);
 app.use('/item-keluar', itemkeluar);
 app.use('/stok-awal', stokawal);
+app.use('/stok-opname', stokopname);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

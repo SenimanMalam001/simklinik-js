@@ -411,6 +411,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_stok_opname',
+      display_name: 'Lihat Stok Opname',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_stok_opname',
+      display_name: 'Buat Stok Opname',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_stok_opname',
+      display_name: 'Ubah Stok Opname',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_stok_opname',
+      display_name: 'Hapus Stok Opname',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
