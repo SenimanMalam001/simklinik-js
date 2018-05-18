@@ -26,6 +26,7 @@ const itemmasuk = require('./routes/itemmasuk');
 const itemkeluar = require('./routes/itemkeluar');
 const stokawal = require('./routes/stokawal');
 const stokopname = require('./routes/stokopname');
+const kasmanual = require('./routes/kasmanual');
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.use('/item-masuk', itemmasuk);
 app.use('/item-keluar', itemkeluar);
 app.use('/stok-awal', stokawal);
 app.use('/stok-opname', stokopname);
+app.use('/kas-manual', kasmanual);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

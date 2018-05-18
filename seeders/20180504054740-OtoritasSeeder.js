@@ -435,6 +435,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_kas_manual',
+      display_name: 'Lihat Kas Manual',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_kas_manual',
+      display_name: 'Buat Kas Manual',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_kas_manual',
+      display_name: 'Ubah Kas Manual',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_kas_manual',
+      display_name: 'Hapus Kas Manual',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

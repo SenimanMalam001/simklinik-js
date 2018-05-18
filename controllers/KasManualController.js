@@ -2,29 +2,16 @@ const models = require('../models');
 const Op = require('sequelize').Op
 
 module.exports = {
-  all: (req,res) => {
-    models.Kas.all().then(kas => {
-      res.status(200).json({
-        message: 'Success Read Kas',
-        data: kas
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        message: 'Something Went Wrong'
-      })
-    })
-
-  },
   find: (req,res) => {
     const { id } = req.params
-    models.Kas.findOne({
+    models.KasManual.findOne({
       where: {
         id: id
       }
-    }).then(kas => {
+    }).then(kasManual => {
       res.status(200).json({
-        message: 'Success Read Kas',
-        data: kas
+        message: 'Success Read Kas Manual',
+        data: kasManual
       })
     }).catch((err) => {
       res.status(500).json({
@@ -44,17 +31,7 @@ module.exports = {
     let pagination
     let limit = 10
     let offset = 0
-    models.Kas.count({
-        where: {
-          [Op.or]: [
-            { kode: {
-              [Op.like]: `%${q}%`
-            }},
-            { nama: {
-              [Op.like]: `%${q}%`
-            }},
-          ]
-        },
+    models.KasManual.count({
     }).then(count => {
       let pages = Math.ceil(count / limit)
       offset = limit * (page - 1)
@@ -65,32 +42,46 @@ module.exports = {
         page
       }
       return pagination
-    }).then( pagination => {
+    }).then(pagination => {
       const { limit, offset} = pagination
-      return models.Kas.all({
+      return models.KasManual.all({
         where: {
-          [Op.or]: [
-            { kode: {
-              [Op.like]: `%${q}%`
-            }},
-            { nama: {
-              [Op.like]: `%${q}%`
-            }},
-          ]
+          no_trans: { [Op.like]: `%${q}%`}
         },
         limit,
-        offset
+        offset,
+        include: [
+          {
+            model: models.Kas,
+          },
+          {
+            model: models.KategoriTransaksi,
+          }
+        ]
       })
     }).then(data => {
       const { pages } = pagination
+      let kasManual = []
+      data.forEach(data => {
+        kasManual.push({
+          id: data.id,
+          no_trans: data.no_trans,
+          jenis: data.jenis,
+          kas: data.Ka.nama,
+          kategori: data.KategoriTransaksi.name,
+          jumlah: data.jumlah,
+          keterangan: data.keterangan,
+        })
+      })
       res.status(200).json({
-        message: 'Success Read Kas',
+        message: 'Success Read KasManual',
         data: {
-          data,
+          data: kasManual,
           pages
         }
       })
     }).catch((err) => {
+      console.log(err);
       res.status(500).json({
         message: 'Something Went Wrong'
       })
@@ -98,54 +89,47 @@ module.exports = {
 
   },
   create: (req, res) => {
-    const { nama, kode,  } = req.body
-    models.Kas.create({
-      nama,
-      kode,
-    }).then((kas) => {
+    const { kas, keterangan, jumlah, kategori, jenis } = req.body
+    models.KasManual.create({
+        kas,
+        keterangan,
+        jumlah,
+        kategori,
+        jenis
+    }).then((kasManual) => {
       res.status(201).json({
-        message: 'Success Create Kas',
-        data: kas
+        message: 'Success Create Kas Manual',
+        data: kasManual
       })
     }).catch((err) => {
-      if (err.errors[0].message) {
-        const message = err.errors[0].message
-        res.status(403).json({
-          message: message,
-        })
-      } else {
-        res.status(500).json({
-          message: 'Something Went Wrong',
-        })
-      }
+      console.log(err);
+      res.status(500).json({
+        message: 'Something Went Wrong',
+      })
     })
   },
   update: (req, res) => {
     const { id } = req.params
-    const { nama, kode } = req.body
-    models.Kas.findOne({
+    const { kas, keterangan, jumlah, kategori, jenis } = req.body
+    models.KasManual.findOne({
       where: { id: id}
-    }).then((kas) => {
-      if (kas) {
-        kas.update({
-          nama,
-          kode,
+    }).then((penjamin) => {
+      if (penjamin) {
+        penjamin.update({
+          kas,
+          keterangan,
+          jumlah,
+          kategori,
+          jenis
         }).then((updatedRuangan) => {
           res.status(200).json({
-            message: 'Success Update Kas',
+            message: "Success Update Kas Manual",
             data: updatedRuangan
           })
         }).catch((err) => {
-          if (err.errors[0].message) {
-            const message = err.errors[0].message
-            res.status(403).json({
-              message: message,
-            })
-          } else {
-            res.status(500).json({
-              message: 'Something Went Wrong',
-            })
-          }
+          res.status(500).json({
+            message: 'Something Went Wrong',
+          })
         })
       } else {
         res.status(404).json({
@@ -160,19 +144,20 @@ module.exports = {
   },
   destroy: (req, res) => {
     const { id } = req.params
-    models.Kas.findOne({
+    models.KasManual.findOne({
       where: {
         id: id
       }
-    }).then((kas) => {
-      kas.destroy().then(() => {
+    }).then((penjamin) => {
+      penjamin.destroy().then(() => {
         res.status(200).json({
-          message: 'Success Delete Kas',
-          data: kas
+          message: 'Success Delete Kas Manual',
+          data: penjamin
         })
       }).catch((err) => {
         res.status(500).json({
           message: 'Something Went Wrong',
+          no_trans
         })
       })
     }).catch((err) => {

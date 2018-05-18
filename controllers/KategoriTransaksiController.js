@@ -2,6 +2,18 @@ const models = require('../models');
 const Op = require('sequelize').Op
 
 module.exports = {
+  all: (req,res) => {
+    models.KategoriTransaksi.all().then(kategoriTransaksi => {
+      res.status(200).json({
+        message: 'Success Read Kategori Transaksi',
+        data: kategoriTransaksi
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+  },
   find: (req,res) => {
     const { id } = req.params
     models.KategoriTransaksi.findOne({
@@ -18,7 +30,6 @@ module.exports = {
         message: 'Something Went Wrong'
       })
     })
-
   },
   index: (req,res) => {
     let { q, page } = req.query
