@@ -26,6 +26,12 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'kas_mutasi',
+        display_name: 'Kas Mutasi',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]
     return queryInterface.bulkInsert('KategoriTransaksis', kategoriTransaksis , {});
   },

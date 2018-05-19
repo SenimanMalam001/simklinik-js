@@ -459,6 +459,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_kas_mutasi',
+      display_name: 'Lihat Kas Mutasi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_kas_mutasi',
+      display_name: 'Buat Kas Mutasi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_kas_mutasi',
+      display_name: 'Ubah Kas Mutasi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_kas_mutasi',
+      display_name: 'Hapus Kas Mutasi',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },
