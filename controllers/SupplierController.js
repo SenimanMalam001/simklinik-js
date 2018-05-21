@@ -2,6 +2,19 @@ const models = require('../models');
 const Op = require('sequelize').Op
 
 module.exports = {
+  all: (req,res) => {
+    const { id } = req.params
+    models.Supplier.all().then(user => {
+      res.status(200).json({
+        message: 'Success Read Supplier',
+        data: user
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+  },
   find: (req,res) => {
     const { id } = req.params
     models.Supplier.findOne({

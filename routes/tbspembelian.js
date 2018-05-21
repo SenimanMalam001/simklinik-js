@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { auth, otoritas} = require('../middlewares/auth')
-const { all, find, index, create, update, destroy} = require('../controllers/SupplierController')
+const { find, index, create, update, destroy, destroyAll} = require('../controllers/TbsPembelianController')
 
-router.get('/all', auth, otoritas, all);
 router.get('/:id', auth, otoritas, find);
 router.get('/', auth, otoritas, index);
 router.post('/', auth, otoritas, create);
 router.put('/:id', auth, otoritas, update);
+router.delete('/all', auth, otoritas, destroyAll);
 router.delete('/:id', auth, otoritas, destroy);
 
 module.exports = router;

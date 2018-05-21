@@ -483,6 +483,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_pembelian',
+      display_name: 'Lihat Pembelian',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_pembelian',
+      display_name: 'Buat Pembelian',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_pembelian',
+      display_name: 'Ubah Pembelian',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_pembelian',
+      display_name: 'Hapus Pembelian',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

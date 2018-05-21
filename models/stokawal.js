@@ -13,15 +13,17 @@ module.exports = (sequelize, DataTypes) => {
   StokAwal.beforeCreate(async (item, options) => {
     try {
       //no trans
-      const stokAwal = await StokAwal.findOne({ order: [['createdAt', 'DESC']]})
-      if (stokAwal) {
-        let { no_trans } = stokAwal
-        no_trans = no_trans.split('-')
-        no_trans = Number(no_trans[1]) + 1
-        no_trans = `SA-${no_trans}`
-        item.no_trans = no_trans
-      } else {
-        item.no_trans = 'SA-1'
+      if (!item.no_trans) {
+        const stokAwal = await StokAwal.findOne({ order: [['createdAt', 'DESC']]})
+        if (stokAwal) {
+          let { no_trans } = stokAwal
+          no_trans = no_trans.split('-')
+          no_trans = Number(no_trans[1]) + 1
+          no_trans = `SA-${no_trans}`
+          item.no_trans = no_trans
+        } else {
+          item.no_trans = 'SA-1'
+        }
       }
     } catch (e) {
       console.log(e);

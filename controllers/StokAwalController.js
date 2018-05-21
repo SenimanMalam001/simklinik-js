@@ -137,7 +137,6 @@ module.exports = {
           const stokAwal = await models.StokAwal.findOne({ order: [['id', 'DESC']]})
           let nomor
           if (stokAwal) {
-            console.log(stokAwal.no_trans,'============================');
             let { no_trans } = stokAwal
             no_trans = no_trans.split('-')
             no_trans = Number(no_trans[1]) + 1
@@ -148,10 +147,7 @@ module.exports = {
           importData.forEach((data, index) => {
             importData[index].no_trans = `SA-${nomor++}`
           })
-
-          console.log(importData,'==============================');
-
-          return models.StokAwal.bulkCreate(importData)
+          return models.StokAwal.bulkCreate(importData,{ individualHooks: true})
         }).then((data) => {
           res.status(201).json({
             message: 'Success Create StokAwal',

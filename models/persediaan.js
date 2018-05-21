@@ -5,6 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     produk: DataTypes.INTEGER,
     masuk: DataTypes.INTEGER,
     keluar: DataTypes.INTEGER,
+    nilai: DataTypes.INTEGER,
+    total_nilai: DataTypes.INTEGER,
     jenis_transaksi: DataTypes.STRING
   }, {});
   Persediaan.associate = function(models) {
