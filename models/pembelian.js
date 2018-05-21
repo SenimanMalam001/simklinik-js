@@ -40,9 +40,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize.models.DetailPembelian.destroy({
       where: {
         no_trans: no_trans
-      }
+      },
+      individualHooks: true
     }, {
-      transaction: options.transaction
+      transaction: options.transaction,
     }).then(persediaan => {
       return options.transaction.commit()
     }).catch( err => {
@@ -89,7 +90,8 @@ module.exports = (sequelize, DataTypes) => {
     sequelize.models.DetailPembelian.destroy({
       where: {
         no_trans: no_trans
-      }
+      },
+      individualHooks: true
     }, {
       transaction: options.transaction
     }).then(data => {
