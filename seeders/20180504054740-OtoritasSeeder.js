@@ -507,6 +507,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_penjualan',
+      display_name: 'Lihat Penjualan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_penjualan',
+      display_name: 'Buat Penjualan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_penjualan',
+      display_name: 'Ubah Penjualan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_penjualan',
+      display_name: 'Hapus Penjualan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

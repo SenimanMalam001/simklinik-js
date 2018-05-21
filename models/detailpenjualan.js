@@ -1,30 +1,30 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var DetailPembelian = sequelize.define('DetailPembelian', {
+  var DetailPenjualan = sequelize.define('DetailPenjualan', {
     no_trans: DataTypes.STRING,
     produk: DataTypes.INTEGER,
-    harga_beli: DataTypes.INTEGER,
+    harga_jual: DataTypes.INTEGER,
     jumlah: DataTypes.INTEGER,
     subtotal: DataTypes.INTEGER,
     diskon: DataTypes.INTEGER,
     total_akhir: DataTypes.INTEGER
   }, {});
-  DetailPembelian.associate = function(models) {
+  DetailPenjualan.associate = function(models) {
     // associations can be defined here
-    DetailPembelian.belongsTo(models.Produk, { foreignKey: 'produk' })
+    DetailPenjualan.belongsTo(models.Produk, { foreignKey: 'produk' })
   };
-  DetailPembelian.afterCreate((item, options) => {
-    const { no_trans, produk, jumlah, harga_beli, total_akhir} = item
+  DetailPenjualan.afterCreate((item, options) => {
+    const { no_trans, produk, jumlah, harga_jual, total_akhir} = item
     sequelize.models.Persediaan.create({
       no_trans,
       produk,
-      masuk: jumlah,
-      nilai: harga_beli,
+      keluar: jumlah,
+      nilai: harga_jual,
       total_nilai: total_akhir,
-      jenis_transaksi: 'pembelian'
+      jenis_transaksi: 'penjualan'
     })
   })
-  DetailPembelian.afterDestroy((item, options) => {
+  DetailPenjualan.afterDestroy((item, options) => {
     const { no_trans , produk } = item
     sequelize.models.Persediaan.destroy({
       where: {
@@ -35,5 +35,5 @@ module.exports = (sequelize, DataTypes) => {
       return true
     }).catch(err => console.log(err))
   })
-  return DetailPembelian;
+  return DetailPenjualan;
 };

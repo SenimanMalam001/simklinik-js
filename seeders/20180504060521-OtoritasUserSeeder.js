@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     const otoritas = []
-    for (var i = 0; i < 84 ; i++) {
+    for (var i = 0; i < 88 ; i++) {
       otoritas.push({
       user: 1,
       otoritas: i + 1,

@@ -29,7 +29,9 @@ const stokopname = require('./routes/stokopname');
 const kasmanual = require('./routes/kasmanual');
 const kasmutasi = require('./routes/kasmutasi');
 const pembelian = require('./routes/pembelian');
+const penjualan = require('./routes/penjualan');
 const tbspembelian = require('./routes/tbspembelian');
+const tbspenjualan = require('./routes/tbspenjualan');
 
 const app = express();
 
@@ -67,6 +69,8 @@ app.use('/kas-manual', kasmanual);
 app.use('/kas-mutasi', kasmutasi);
 app.use('/pembelian', pembelian);
 app.use('/tbs-pembelian', tbspembelian);
+app.use('/penjualan', penjualan);
+app.use('/tbs-penjualan', tbspenjualan);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
