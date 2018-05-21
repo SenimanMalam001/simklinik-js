@@ -12,7 +12,6 @@ module.exports = {
         id: id
       }
     }).then(pembelian => {
-      console.log(pembelian.no_trans ,'no trans =========================');
       models.TbsPembelian.destroy({
         where: {
           user: user.id
@@ -27,7 +26,6 @@ module.exports = {
         const tbsPembelian = []
         detailPembelian.forEach((detail) => {
           const { produk, harga_beli, jumlah,subtotal,diskon, total_akhir} = detail
-          console.log(total_akhir,'============ total akhir');
           tbsPembelian.push({
             user: user.id ,
             produk,
