@@ -531,6 +531,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_petugas',
+      display_name: 'Lihat Petugas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_petugas',
+      display_name: 'Buat Petugas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_petugas',
+      display_name: 'Ubah Petugas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_petugas',
+      display_name: 'Hapus Petugas',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

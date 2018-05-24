@@ -32,6 +32,7 @@ const pembelian = require('./routes/pembelian');
 const penjualan = require('./routes/penjualan');
 const tbspembelian = require('./routes/tbspembelian');
 const tbspenjualan = require('./routes/tbspenjualan');
+const petugas = require('./routes/petugas');
 
 const app = express();
 
@@ -71,6 +72,7 @@ app.use('/pembelian', pembelian);
 app.use('/tbs-pembelian', tbspembelian);
 app.use('/penjualan', penjualan);
 app.use('/tbs-penjualan', tbspenjualan);
+app.use('/petugas', petugas);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
