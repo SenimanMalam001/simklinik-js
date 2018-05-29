@@ -22,6 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       nilai: harga_jual,
       total_nilai: total_akhir,
       jenis_transaksi: 'penjualan'
+    }).catch((err) => {
+      console.log(err);
     })
   })
   DetailPenjualan.afterDestroy((item, options) => {

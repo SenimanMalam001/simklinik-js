@@ -555,6 +555,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_komisi_penjualan',
+      display_name: 'Lihat Komisi Penjualan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_komisi_penjualan',
+      display_name: 'Buat Komisi Penjualan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_komisi_penjualan',
+      display_name: 'Ubah Komisi Penjualan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_komisi_penjualan',
+      display_name: 'Hapus Komisi Penjualan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

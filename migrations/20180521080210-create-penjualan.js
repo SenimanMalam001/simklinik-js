@@ -9,13 +9,19 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       no_trans: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      no_reg: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       penjamin: {
         type: Sequelize.INTEGER
       },
       status_jual: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       subtotal: {
         type: Sequelize.INTEGER
@@ -36,10 +42,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userCreated: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+
       },
       userEdited: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

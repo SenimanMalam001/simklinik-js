@@ -8,7 +8,12 @@ module.exports = {
     models.Penjualan.findOne({
       where: {
         id: id
-      }
+      },
+      include: [
+        {
+          model: models.PetugasPenjualan
+        }
+      ]
     }).then(penjualan => {
       models.TbsPenjualan.destroy({
         where: {
@@ -125,11 +130,14 @@ module.exports = {
       total_akhir,
       jumlah_bayar,
       jumlah_kredit,
-      cara_bayar
+      cara_bayar,
+      no_reg,
+      petugas
     } = req.body
     const { user } = req
     models.sequelize.transaction().then(t => {
       return models.Penjualan.create({
+        no_reg,
         penjamin,
         status_jual,
         subtotal,
@@ -140,11 +148,11 @@ module.exports = {
         jumlah_kredit,
         userCreated: user.id,
         userEdited: user.id
-      }, { transaction: t}).then((result) => {
-        res.status(201).json({
-          message: 'Success Create Penjualan',
-          data: result
-        })
+      }, { transaction: t, petugas: petugas }).then((result) => {
+          res.status(201).json({
+            message: 'Success Create Penjualan',
+            data: result
+          })
       }).catch((err) => {
         console.log(err);
         res.status(500).json({
@@ -157,15 +165,16 @@ module.exports = {
   update: (req, res) => {
     const { id } = req.params
     const { ...input } = req.body
+    const { petugas } = req.body
       models.Penjualan.findOne({
         where: { id: id}
       }).then((penjualan) => {
         if (penjualan) {
           models.sequelize.transaction(t => {
-          penjualan.update({...input, userEdited: req.user.id}).then((updatedPenjualan) => {
-            res.status(200).json({
-              data: updatedPenjualan
-            })
+          penjualan.update({...input, userEdited: req.user.id},{ petugas}).then((updatedPenjualan) => {
+              res.status(200).json({
+                data: updatedPenjualan
+              })
           }).catch((err) => {
             console.log(err);
             res.status(500).json({

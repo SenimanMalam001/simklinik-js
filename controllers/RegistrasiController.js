@@ -2,6 +2,34 @@ const models = require('../models');
 const Op = require('sequelize').Op
 
 module.exports = {
+  all: (req,res) => {
+    models.Registrasi.all({
+      where: {
+        status_registrasi: 0
+      },
+      include: [
+        {model: models.Pasien}
+      ]
+    }).then(data => {
+      let registrasi = []
+      registrasi = data.map(data => {
+        return {
+          id: data.id,
+          no_reg: data.no_reg,
+          no_rm: data.Pasien.no_rm,
+          nama: data.Pasien.nama,
+        }
+      })
+      res.status(200).json({
+        message: 'Success Read Registrasi',
+        data: registrasi
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+  },
   find: (req,res) => {
     const { id } = req.params
     models.Registrasi.findOne({

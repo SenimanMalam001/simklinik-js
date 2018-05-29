@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   var Penjualan = sequelize.define('Penjualan', {
     no_trans: DataTypes.STRING,
+    no_reg: DataTypes.STRING,
     penjamin: DataTypes.INTEGER,
     status_jual: DataTypes.STRING,
     subtotal: DataTypes.INTEGER,
@@ -16,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   Penjualan.associate = function(models) {
     // associations can be defined here
     Penjualan.belongsTo(models.Penjamin, { foreignKey: 'penjamin' })
+    Penjualan.hasMany(models.PetugasPenjualan, { foreignKey: 'penjualan', sourceKey: 'no_trans'} )
   };
 
   Penjualan.beforeCreate(async (item, options) => {
@@ -36,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   Penjualan.afterDestroy((item, options) => {
-    const { no_trans }  = item
+    const { no_trans,id }  = item
     sequelize.models.DetailPenjualan.destroy({
       where: {
         no_trans: no_trans
@@ -44,7 +46,20 @@ module.exports = (sequelize, DataTypes) => {
       individualHooks: true
     }, {
       transaction: options.transaction,
-    }).then(persediaan => {
+    }).then(detailPenjualan => {
+      return sequelize.models.PetugasPenjualan.destroy({
+        where: {
+          penjualan: no_trans
+        },
+        individualHooks: true
+      })
+    }).then((result) => {
+      return sequelize.models.KomisiPenjualan.destroy({
+        where: {
+          no_trans: no_trans
+        }
+      })
+    }).then(() => {
       return options.transaction.commit()
     }).catch( err => {
       console.log(err)
@@ -52,7 +67,9 @@ module.exports = (sequelize, DataTypes) => {
     })
   })
   Penjualan.afterCreate((item, options) => {
-    const { userCreated, no_trans } = item
+    const { userCreated, no_trans, cara_bayar, jumlah_bayar, total_akhir, no_reg } = item
+    let terbayar = total_akhir - jumlah_bayar;
+    jumlah_bayar > total_akhir ? terbayar = total_akhir : terbayar = jumlah_bayar
     sequelize.models.TbsPenjualan.findAll({
       where: {
         user: userCreated
@@ -72,13 +89,73 @@ module.exports = (sequelize, DataTypes) => {
         })
       })
       return sequelize.models.DetailPenjualan.bulkCreate( detailPenjualan, { individualHooks: true, transaction: options.transaction})
-    }).then((detail) => {
+    }).then( async (detail) => {
+      const { petugas } = options
+      try {
+        for (var i = 0; i < petugas.length; i++) {
+          await sequelize.models.PetugasPenjualan.create({
+            user: petugas[i],
+            penjualan: no_trans
+          }, { transaction: options.transaction})
+        }
+        for (var i = 0; i < detail.length; i++) {
+          for (var j = 0; j < petugas.length; j++) {
+            const komisi = await sequelize.models.Komisi.findOne({
+              where: {
+                user: petugas[j],
+                produk: detail[i].produk
+              },
+              transaction: options.transaction
+            })
+            if (komisi) {
+              await sequelize.models.KomisiPenjualan.create({
+                no_trans,
+                user: petugas[j],
+                produk: detail[i].produk,
+                jumlah: detail[i].jumlah,
+                nilai_komisi: komisi.jumlah,
+                total_komisi: Number(komisi.jumlah) * Number(detail[i].jumlah)
+              },{transaction: options.transaction})
+            }
+          }
+        }
+
+      } catch (e) {
+        console.log(e);
+      }
+    }).then(() => {
       return sequelize.models.TbsPenjualan.destroy({
         where: {
           user: userCreated
         }
       },{ transaction: options.transaction})
+    }).then( async () => {
+      try {
+        const kategori  = await sequelize.models.KategoriTransaksi.findOne({
+          where: {
+            name: 'penjualan'
+          }
+        })
+        return sequelize.models.TransaksiKas.create({
+          no_trans,
+          kas: cara_bayar,
+          masuk: terbayar,
+          kategori: kategori.id,
+          jenis_transaksi: 'penjualan'
+        })
+      } catch (e) {
+        console.log(e);
+        return options.transaction.rollback()
+      }
     }).then((deleted) => {
+      return sequelize.models.Registrasi.update({
+        status_registrasi: 1
+      }, {
+        where: {
+          id: no_reg
+        }
+      })
+    }).then(() => {
       return options.transaction.commit()
     }).catch( err => {
       console.log(err);
@@ -86,7 +163,7 @@ module.exports = (sequelize, DataTypes) => {
     })
   });
   Penjualan.afterUpdate((item, options) => {
-    const { userEdited, no_trans } = item
+    const { userEdited, no_trans, createdAt } = item
     sequelize.models.DetailPenjualan.destroy({
       where: {
         no_trans: no_trans
@@ -115,7 +192,52 @@ module.exports = (sequelize, DataTypes) => {
         })
       })
       return sequelize.models.DetailPenjualan.bulkCreate( detailPenjualan, { individualHooks: true, transaction: options.transaction})
-    }).then((detail) => {
+    }).then( async (detail) => {
+      const { petugas } = options
+      try {
+        await sequelize.models.KomisiPenjualan.destroy({
+          where: {
+            no_trans
+          }
+        })
+        await sequelize.models.PetugasPenjualan.destroy({
+          where: {
+            penjualan: no_trans
+          }
+        })
+        for (var i = 0; i < petugas.length; i++) {
+          await sequelize.models.PetugasPenjualan.create({
+            user: petugas[i],
+            penjualan: no_trans
+          }, { transaction: options.transaction})
+        }
+        for (var i = 0; i < detail.length; i++) {
+          for (var j = 0; j < petugas.length; j++) {
+            const komisi = await sequelize.models.Komisi.findOne({
+              where: {
+                user: petugas[j],
+                produk: detail[i].produk
+              },
+              transaction: options.transaction
+            })
+            if (komisi) {
+              await sequelize.models.KomisiPenjualan.create({
+                no_trans,
+                user: petugas[j],
+                produk: detail[i].produk,
+                jumlah: detail[i].jumlah,
+                nilai_komisi: komisi.jumlah,
+                total_komisi: Number(komisi.jumlah) * Number(detail[i].jumlah),
+                createdAt
+              })
+            }
+          }
+        }
+
+      } catch (e) {
+        console.log(e);
+      }
+    }).then(() => {
       return sequelize.models.TbsPenjualan.destroy({
         where: {
           user: userEdited
