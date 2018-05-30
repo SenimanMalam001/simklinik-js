@@ -34,6 +34,9 @@ const penjualan = require('./routes/penjualan');
 const tbspembelian = require('./routes/tbspembelian');
 const tbspenjualan = require('./routes/tbspenjualan');
 const petugas = require('./routes/petugas');
+const pembayaranpiutang = require('./routes/pembayaranpiutang');
+const piutang = require('./routes/piutang');
+const pembayaranhutang = require('./routes/pembayaranhutang');
 
 const app = express();
 
@@ -75,6 +78,9 @@ app.use('/tbs-pembelian', tbspembelian);
 app.use('/penjualan', penjualan);
 app.use('/tbs-penjualan', tbspenjualan);
 app.use('/petugas', petugas);
+app.use('/pembayaranpiutang', pembayaranpiutang);
+app.use('/piutang', piutang);
+app.use('/pembayaranhutang', pembayaranhutang);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

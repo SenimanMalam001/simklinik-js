@@ -52,7 +52,11 @@ module.exports = (sequelize, DataTypes) => {
     })
   })
   Pembelian.afterCreate((item, options) => {
-    const { userCreated, no_trans } = item
+    const { userCreated, no_trans, cara_bayar, jumlah_bayar, total_akhir, supplier } = item
+    let terbayar = total_akhir - jumlah_bayar;
+    let hutang
+    jumlah_bayar > total_akhir ? terbayar = total_akhir : terbayar = jumlah_bayar
+    jumlah_bayar < total_akhir ? hutang = total_akhir - jumlah_bayar : piutang = 0
     sequelize.models.TbsPembelian.findAll({
       where: {
         user: userCreated
@@ -78,6 +82,33 @@ module.exports = (sequelize, DataTypes) => {
           user: userCreated
         }
       },{ transaction: options.transaction})
+    }).then( async () => {
+      try {
+        const kategori  = await sequelize.models.KategoriTransaksi.findOne({
+          where: {
+            name: 'pembelian'
+          }
+        })
+        if (terbayar > 0) {
+           await sequelize.models.TransaksiKas.create({
+            no_trans,
+            kas: cara_bayar,
+            keluar: terbayar,
+            kategori: kategori.id,
+            jenis_transaksi: 'pembelian'
+          })
+        }
+        if (hutang > 0) {
+          await sequelize.models.Hutang.create({
+            no_pembelian: no_trans,
+            supplier,
+            jumlah: hutang,
+          })
+        }
+      } catch (e) {
+        console.log(e);
+        return options.transaction.rollback()
+      }
     }).then((deleted) => {
       return options.transaction.commit()
     }).catch( err => {
@@ -86,7 +117,11 @@ module.exports = (sequelize, DataTypes) => {
     })
   });
   Pembelian.afterUpdate((item, options) => {
-    const { userEdited, no_trans } = item
+    const { userEdited, no_trans, cara_bayar, jumlah_bayar, total_akhir, supplier } = item
+    let terbayar = total_akhir - jumlah_bayar;
+    let hutang
+    jumlah_bayar > total_akhir ? terbayar = total_akhir : terbayar = jumlah_bayar
+    jumlah_bayar < total_akhir ? hutang = total_akhir - jumlah_bayar : piutang = 0
     sequelize.models.DetailPembelian.destroy({
       where: {
         no_trans: no_trans
@@ -121,6 +156,43 @@ module.exports = (sequelize, DataTypes) => {
           user: userEdited
         }
       },{ transaction: options.transaction})
+    }).then( async () => {
+      try {
+        await sequelize.models.TransaksiKas.destroy({
+          where: {
+            no_trans
+          }
+        })
+        await sequelize.models.Hutang.destroy({
+          where: {
+            no_pembelian: no_trans
+          }
+        })
+        const kategori  = await sequelize.models.KategoriTransaksi.findOne({
+          where: {
+            name: 'pembelian'
+          }
+        })
+        if (terbayar > 0) {
+           await sequelize.models.TransaksiKas.create({
+            no_trans,
+            kas: cara_bayar,
+            keluar: terbayar,
+            kategori: kategori.id,
+            jenis_transaksi: 'pembelian'
+          })
+        }
+        if (hutang > 0) {
+          await sequelize.models.Hutang.create({
+            no_pembelian: no_trans,
+            supplier,
+            jumlah: hutang,
+          })
+        }
+      } catch (e) {
+        console.log(e);
+        return options.transaction.rollback()
+      }
     }).then((deleted) => {
       return true
     }).catch( err => {

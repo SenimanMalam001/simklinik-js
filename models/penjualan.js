@@ -59,6 +59,18 @@ module.exports = (sequelize, DataTypes) => {
           no_trans: no_trans
         }
       })
+    }).then((result) => {
+      return sequelize.models.TransaksiKas.destroy({
+        where: {
+          no_trans: no_trans
+        }
+      })
+    }).then((result) => {
+      return sequelize.models.Piutang.destroy({
+        where: {
+          no_penjualan: no_trans
+        }
+      })
     }).then(() => {
       return options.transaction.commit()
     }).catch( err => {
@@ -67,9 +79,11 @@ module.exports = (sequelize, DataTypes) => {
     })
   })
   Penjualan.afterCreate((item, options) => {
-    const { userCreated, no_trans, cara_bayar, jumlah_bayar, total_akhir, no_reg } = item
+    const { userCreated, no_trans, cara_bayar, jumlah_bayar, total_akhir, no_reg, penjamin } = item
     let terbayar = total_akhir - jumlah_bayar;
+    let piutang
     jumlah_bayar > total_akhir ? terbayar = total_akhir : terbayar = jumlah_bayar
+    jumlah_bayar < total_akhir ? piutang = total_akhir - jumlah_bayar : piutang = 0
     sequelize.models.TbsPenjualan.findAll({
       where: {
         user: userCreated
@@ -136,18 +150,27 @@ module.exports = (sequelize, DataTypes) => {
             name: 'penjualan'
           }
         })
-        return sequelize.models.TransaksiKas.create({
-          no_trans,
-          kas: cara_bayar,
-          masuk: terbayar,
-          kategori: kategori.id,
-          jenis_transaksi: 'penjualan'
-        })
+        if (terbayar > 0) {
+           await sequelize.models.TransaksiKas.create({
+            no_trans,
+            kas: cara_bayar,
+            masuk: terbayar,
+            kategori: kategori.id,
+            jenis_transaksi: 'penjualan'
+          })
+        }
+        if (piutang > 0) {
+          await sequelize.models.Piutang.create({
+            no_penjualan: no_trans,
+            penjamin,
+            jumlah: piutang,
+          })
+        }
       } catch (e) {
         console.log(e);
         return options.transaction.rollback()
       }
-    }).then((deleted) => {
+    }).then(() => {
       return sequelize.models.Registrasi.update({
         status_registrasi: 1
       }, {
@@ -163,7 +186,11 @@ module.exports = (sequelize, DataTypes) => {
     })
   });
   Penjualan.afterUpdate((item, options) => {
-    const { userEdited, no_trans, createdAt } = item
+    const { userEdited, no_trans, cara_bayar, jumlah_bayar, total_akhir, no_reg, penjamin, createdAt } = item
+    let terbayar = total_akhir - jumlah_bayar;
+    let piutang
+    jumlah_bayar > total_akhir ? terbayar = total_akhir : terbayar = jumlah_bayar
+    jumlah_bayar < total_akhir ? piutang = total_akhir - jumlah_bayar : piutang = 0
     sequelize.models.DetailPenjualan.destroy({
       where: {
         no_trans: no_trans
@@ -243,6 +270,43 @@ module.exports = (sequelize, DataTypes) => {
           user: userEdited
         }
       },{ transaction: options.transaction})
+    }).then( async () => {
+      try {
+        await sequelize.models.TransaksiKas.destroy({
+          where: {
+            no_trans
+          }
+        })
+        await sequelize.models.Piutang.destroy({
+          where: {
+            no_penjualan: no_trans
+          }
+        })
+        const kategori  = await sequelize.models.KategoriTransaksi.findOne({
+          where: {
+            name: 'penjualan'
+          }
+        })
+        if (terbayar > 0) {
+           await sequelize.models.TransaksiKas.create({
+            no_trans,
+            kas: cara_bayar,
+            masuk: terbayar,
+            kategori: kategori.id,
+            jenis_transaksi: 'penjualan'
+          })
+        }
+        if (piutang > 0) {
+          await sequelize.models.Piutang.create({
+            no_penjualan: no_trans,
+            penjamin,
+            jumlah: piutang,
+          })
+        }
+      } catch (e) {
+        console.log(e);
+        return options.transaction.rollback()
+      }
     }).then((deleted) => {
       return true
     }).catch( err => {

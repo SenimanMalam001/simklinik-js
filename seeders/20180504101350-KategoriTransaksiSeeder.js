@@ -32,6 +32,18 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'pembayaran_piutang',
+        display_name: 'Pembayaran Piutang',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'pembayaran_hutang',
+        display_name: 'Pembayaran Hutang',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]
     return queryInterface.bulkInsert('KategoriTransaksis', kategoriTransaksis , {});
   },
