@@ -30,13 +30,18 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Registrasi.afterDestroy((registrasi) => {
-    const { id } = registrasi
+    const { id, no_reg } = registrasi
     sequelize.models.RuanganTerpakai.findOne({
       where:id
     }).then((ruanganTerpakai) => {
       if (ruanganTerpakai) {
         ruanganTerpakai.destroy()
       }
+      return sequelize.models.RekamMedik.destroy({
+        where: {
+          no_reg
+        }
+      })
     }).catch(err => console.log(err))
   })
 
