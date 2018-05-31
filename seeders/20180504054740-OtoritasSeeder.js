@@ -10,8 +10,7 @@ module.exports = {
       updatedAt: new Date(),
     },
     {
-      name: 'create_user',
-      display_name: 'Buat User',
+      name: 'create_user', display_name: 'Buat User',
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -624,6 +623,12 @@ module.exports = {
     {
       name: 'delete_pembayaran_hutang',
       display_name: 'Hapus Pembayaran Hutang',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'get_transaksi_kas',
+      display_name: 'Lihat Transaksi Kas / Arus Kas',
       createdAt: new Date(),
       updatedAt: new Date(),
     },

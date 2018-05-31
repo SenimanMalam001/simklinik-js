@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
     let terbayar = total_akhir - jumlah_bayar;
     let hutang
     jumlah_bayar > total_akhir ? terbayar = total_akhir : terbayar = jumlah_bayar
-    jumlah_bayar < total_akhir ? hutang = total_akhir - jumlah_bayar : piutang = 0
+    jumlah_bayar < total_akhir ? hutang = total_akhir - jumlah_bayar : hutang = 0
     sequelize.models.TbsPembelian.findAll({
       where: {
         user: userCreated
@@ -121,7 +121,7 @@ module.exports = (sequelize, DataTypes) => {
     let terbayar = total_akhir - jumlah_bayar;
     let hutang
     jumlah_bayar > total_akhir ? terbayar = total_akhir : terbayar = jumlah_bayar
-    jumlah_bayar < total_akhir ? hutang = total_akhir - jumlah_bayar : piutang = 0
+    jumlah_bayar < total_akhir ? hutang = total_akhir - jumlah_bayar : hutang = 0
     sequelize.models.DetailPembelian.destroy({
       where: {
         no_trans: no_trans

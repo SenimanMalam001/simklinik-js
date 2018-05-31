@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      no_rekam_medik: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       no_reg: {
         type: Sequelize.STRING,
         allowNull: false

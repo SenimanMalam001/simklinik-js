@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   TransaksiKas.associate = function(models) {
     // associations can be defined here
+    TransaksiKas.belongsTo(models.Kas, { foreignKey: 'kas' })
+    TransaksiKas.belongsTo(models.KategoriTransaksi, { foreignKey: 'kategori' })
   };
   return TransaksiKas;
 };

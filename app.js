@@ -37,6 +37,7 @@ const petugas = require('./routes/petugas');
 const pembayaranpiutang = require('./routes/pembayaranpiutang');
 const piutang = require('./routes/piutang');
 const pembayaranhutang = require('./routes/pembayaranhutang');
+const transaksikas = require('./routes/transaksikas');
 
 const app = express();
 
@@ -81,6 +82,7 @@ app.use('/petugas', petugas);
 app.use('/pembayaranpiutang', pembayaranpiutang);
 app.use('/piutang', piutang);
 app.use('/pembayaranhutang', pembayaranhutang);
+app.use('/transaksikas', transaksikas);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
