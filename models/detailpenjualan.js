@@ -13,18 +13,37 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     DetailPenjualan.belongsTo(models.Produk, { foreignKey: 'produk' })
   };
-  DetailPenjualan.afterCreate((item, options) => {
+  DetailPenjualan.afterCreate(async (item, options) => {
     const { no_trans, produk, jumlah, harga_jual, total_akhir} = item
+    try {
+
+    const total_nilai_masuk = await sequelize.models.Persediaan.sum('total_nilai',{
+      where: {
+        produk,
+        keluar: 0
+      }
+    })
+    const total_masuk = await sequelize.models.Persediaan.sum('masuk',{
+      where: {
+        produk,
+        keluar: 0
+      }
+    })
+    const hpp = Number(total_nilai_masuk) / Number(total_masuk)
     sequelize.models.Persediaan.create({
       no_trans,
       produk,
       keluar: jumlah,
-      nilai: harga_jual,
-      total_nilai: total_akhir,
+      nilai: hpp,
+      total_nilai: hpp * jumlah,
       jenis_transaksi: 'penjualan'
     }).catch((err) => {
       console.log(err);
     })
+    } catch (e) {
+      console.log(e);
+    }
+
   })
   DetailPenjualan.afterDestroy((item, options) => {
     const { no_trans , produk } = item

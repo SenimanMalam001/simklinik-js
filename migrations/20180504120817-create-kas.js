@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
+      default_kas: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
     StokOpname.belongsTo(models.Produk, { foreignKey: 'produk' })
   };
   StokOpname.beforeCreate(async (item, options) => {
-    console.log('hahahahahahah========================');
     try {
       const stokOpname = await StokOpname.findOne({ order: [['createdAt', 'DESC']]})
       if (stokOpname) {
@@ -41,10 +40,21 @@ module.exports = (sequelize, DataTypes) => {
       item.stok_komputer = masuk - keluar
       item.selisih = item.stok_akhir - item.stok_komputer
       // nilai selisih
-      const produk = await sequelize.models.Produk.findOne({
-        where: { id: item.produk}
+      const { produk } = item
+      const total_nilai_masuk = await sequelize.models.Persediaan.sum('total_nilai',{
+        where: {
+          produk,
+          keluar: 0
+        }
       })
-      item.nilai_selisih = produk.harga_beli * item.selisih
+      const total_masuk = await sequelize.models.Persediaan.sum('masuk',{
+        where: {
+          produk,
+          keluar: 0
+        }
+      })
+      const hpp = Number(total_nilai_masuk) / Number(total_masuk)
+      item.nilai_selisih = hpp * item.selisih
       return item
     } catch (e) {
       console.log(e);
@@ -52,12 +62,14 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   StokOpname.afterCreate((item) => {
-    const { no_trans, produk, selisih} = item
+    const { no_trans, produk, selisih, nilai_selisih} = item
     if (selisih < 0) {
       sequelize.models.Persediaan.create({
         no_trans,
         produk,
         keluar: Math.abs(selisih),
+        nilai: Math.abs(nilai_selisih) / Math.abs(selisih),
+        total_nilai: Math.abs(nilai_selisih),
         jenis_transaksi: 'stok_opname'
       })
 
@@ -66,6 +78,8 @@ module.exports = (sequelize, DataTypes) => {
         no_trans,
         produk,
         masuk: selisih,
+        nilai: nilai_selisih / selisih,
+        total_nilai: nilai_selisih,
         jenis_transaksi: 'stok_opname'
       })
     }

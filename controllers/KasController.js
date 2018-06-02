@@ -98,10 +98,11 @@ module.exports = {
 
   },
   create: (req, res) => {
-    const { nama, kode,  } = req.body
+    const { nama, kode, default_kas  } = req.body
     models.Kas.create({
       nama,
       kode,
+      default_kas
     }).then((kas) => {
       res.status(201).json({
         message: 'Success Create Kas',
@@ -122,7 +123,7 @@ module.exports = {
   },
   update: (req, res) => {
     const { id } = req.params
-    const { nama, kode } = req.body
+    const { nama, kode, default_kas } = req.body
     models.Kas.findOne({
       where: { id: id}
     }).then((kas) => {
@@ -130,6 +131,7 @@ module.exports = {
         kas.update({
           nama,
           kode,
+          default_kas
         }).then((updatedRuangan) => {
           res.status(200).json({
             message: 'Success Update Kas',

@@ -12,6 +12,10 @@ module.exports = {
       include: [
         {
           model: models.PetugasPenjualan
+        },
+        {
+          model: models.DetailPenjualan,
+          include: [ { model: models.Produk}]
         }
       ]
     }).then(penjualan => {

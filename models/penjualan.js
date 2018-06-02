@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Penjualan.belongsTo(models.Penjamin, { foreignKey: 'penjamin' })
     Penjualan.hasMany(models.PetugasPenjualan, { foreignKey: 'penjualan', sourceKey: 'no_trans'} )
+    Penjualan.hasMany(models.DetailPenjualan, { foreignKey: 'no_trans', sourceKey: 'no_trans'} )
   };
 
   Penjualan.beforeCreate(async (item, options) => {
