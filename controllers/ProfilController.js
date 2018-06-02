@@ -2,7 +2,7 @@ const models = require('../models');
 
 module.exports = {
   index: (req,res) => {
-    models.Profil.findOne().then(profil => {
+    models.Profil.all().then(profil => {
       res.status(200).json({
         message: 'Success Read Profil',
         data: profil
