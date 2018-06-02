@@ -632,6 +632,30 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_rekam_medik',
+      display_name: 'Lihat Rekam Medik',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'create_rekam_medik',
+      display_name: 'Buat Rekam Medik',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'edit_rekam_medik',
+      display_name: 'Ubah Rekam Medik',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'delete_rekam_medik',
+      display_name: 'Hapus Rekam Medik',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

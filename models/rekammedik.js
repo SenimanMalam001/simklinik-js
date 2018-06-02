@@ -23,11 +23,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   RekamMedik.associate = function(models) {
     // associations can be defined here
+    RekamMedik.belongsTo(models.Registrasi, { foreignKey: 'no_reg',targetKey: 'no_reg' })
   };
   RekamMedik.beforeCreate(async (item, options) => {
 
     try {
-      console.log('hihihi====================================');
       const profil = await sequelize.models.Profil.findOne({
         where: {
           id: 1
@@ -46,10 +46,8 @@ module.exports = (sequelize, DataTypes) => {
         no_rekam_medik = no_rekam_medik.split('-')
         no_rekam_medik = Number(no_rekam_medik[2]) + 1
         no_rekam_medik = `${profil.kode}-RM-${no_rekam_medik}`
-        console.log(no_rekam_medik,'===========================');
         item.no_rekam_medik = no_rekam_medik
       } else {
-        console.log('hahah====================================');
         item.no_rekam_medik = `${profil.kode}-RM-1`
       }
     } catch (e) {

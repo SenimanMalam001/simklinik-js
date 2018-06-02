@@ -38,6 +38,7 @@ const pembayaranpiutang = require('./routes/pembayaranpiutang');
 const piutang = require('./routes/piutang');
 const pembayaranhutang = require('./routes/pembayaranhutang');
 const transaksikas = require('./routes/transaksikas');
+const rekammedik = require('./routes/rekammedik');
 
 const app = express();
 
@@ -83,6 +84,7 @@ app.use('/pembayaranpiutang', pembayaranpiutang);
 app.use('/piutang', piutang);
 app.use('/pembayaranhutang', pembayaranhutang);
 app.use('/transaksikas', transaksikas);
+app.use('/rekammedik', rekammedik);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
