@@ -18,6 +18,7 @@ module.exports = {
           no_reg: data.no_reg,
           no_rm: data.Pasien.no_rm,
           nama: data.Pasien.nama,
+          penjamin: data.penjamin,
         }
       })
       res.status(200).json({
