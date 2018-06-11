@@ -96,6 +96,7 @@ module.exports = {
         },
         limit,
         offset,
+        order: [['id','DESC']],
         include: [
           {
             model: models.Penjamin,
