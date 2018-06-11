@@ -4,14 +4,25 @@ const Op = require('sequelize').Op
 module.exports = {
   interval: (req,res) => {
     const { dari_tanggal, sampai_tanggal, kas} = req.query
-    models.TransaksiKas.all({
-      where: {
+    let where
+    if (kas) {
+      where = {
         createdAt: {
           [Op.gte]: new Date(Number(dari_tanggal)),
           [Op.lte]: new Date(Number(sampai_tanggal))
         },
         kas
-      },
+      }
+    } else {
+      where = {
+        createdAt: {
+          [Op.gte]: new Date(Number(dari_tanggal)),
+          [Op.lte]: new Date(Number(sampai_tanggal))
+        },
+      }
+    }
+    models.TransaksiKas.all({
+      where,
       include: [
         {
           model: models.Kas
