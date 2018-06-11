@@ -14,6 +14,9 @@ module.exports = {
           model: models.PetugasPenjualan
         },
         {
+          model: models.Penjamin
+        },
+        {
           model: models.DetailPenjualan,
           include: [ { model: models.Produk}]
         }
