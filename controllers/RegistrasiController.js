@@ -86,7 +86,8 @@ module.exports = {
           }
         ],
         limit,
-        offset
+        offset,
+        order: [['createdAt','DESC']]
       })
     }).then(data => {
       const { pages } = pagination
@@ -97,7 +98,8 @@ module.exports = {
           no_rm: data.Pasien.no_rm,
           nama: data.Pasien.nama,
           dokter: data.User.name,
-          poli: data.Poli.display_name
+          poli: data.Poli.display_name,
+          no_antrian: data.no_antrian
         }
       })
       res.status(200).json({

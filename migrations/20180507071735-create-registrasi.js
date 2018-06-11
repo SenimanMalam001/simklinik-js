@@ -35,6 +35,10 @@ module.exports = {
       jenis_registrasi: {
         type: Sequelize.STRING
       },
+      no_antrian: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

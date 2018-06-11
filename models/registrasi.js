@@ -1,4 +1,6 @@
 'use strict';
+const moment = require('moment')
+
 module.exports = (sequelize, DataTypes) => {
   var Registrasi = sequelize.define('Registrasi', {
     no_reg: DataTypes.STRING,
@@ -8,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     dokter: DataTypes.INTEGER,
     ruangan: DataTypes.INTEGER,
     status_registrasi: DataTypes.INTEGER,
-    jenis_registrasi: DataTypes.STRING
+    jenis_registrasi: DataTypes.STRING,
+    no_antrian: DataTypes.INTEGER
   }, {});
   Registrasi.associate = function(models) {
     // associations can be defined here
@@ -18,6 +21,29 @@ module.exports = (sequelize, DataTypes) => {
     Registrasi.belongsTo(models.Pasien, { foreignKey: 'pasien', targetKey: 'no_rm' })
     Registrasi.belongsTo(models.Penjamin, { foreignKey: 'penjamin' })
   };
+  Registrasi.beforeCreate(async (registrasi, options) => {
+    try {
+      const reg_terakhir = await Registrasi.findOne({
+        order: [['createdAt','DESC']]
+      })
+      if (reg_terakhir) {
+        const tanggal_akhir = moment(reg_terakhir.createdAt).format('YYYY-MM-DD')
+        const tanggal_sekarang = moment().format('YYYY-MM-DD')
+        if (tanggal_akhir == tanggal_sekarang) {
+          const antrian = Number(reg_terakhir.no_antrian) + 1
+          registrasi.no_antrian = antrian
+        } else {
+          console.log('masuk 1111111');
+          registrasi.no_antrian = 1
+        }
+      } else {
+        registrasi.no_antrian = 1
+      }
+      return registrasi
+    } catch (e) {
+      console.log(e);
+    }
+  })
   Registrasi.afterCreate((registrasi) => {
     const { ruangan, id } = registrasi
     if (Number(ruangan) > 0) {
