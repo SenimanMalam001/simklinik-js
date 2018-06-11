@@ -656,6 +656,12 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      name: 'get_persediaan',
+      display_name: 'Lihat Persediaan',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ],
     {});
   },

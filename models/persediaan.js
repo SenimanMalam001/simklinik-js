@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Persediaan.associate = function(models) {
     // associations can be defined here
+    Persediaan.belongsTo(models.Produk, { foreignKey: 'produk' })
   };
   return Persediaan;
 };
