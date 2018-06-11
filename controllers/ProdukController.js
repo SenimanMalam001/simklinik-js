@@ -80,6 +80,8 @@ module.exports = {
             }},
           ]
         },
+        limit,
+        offset
       })
     }).then(data => {
       const { pages } = pagination
