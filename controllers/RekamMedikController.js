@@ -65,19 +65,22 @@ module.exports = {
     }).then( pagination => {
       const { limit, offset} = pagination
       return models.RekamMedik.all({
-        where: {
-           no_reg: {
-            [Op.like]: `%${q}%`
-          },
-        },
         limit,
         offset,
         include: [
           {
             model: models.Registrasi,
-            include: [{ model: models.Pasien}]
+            include: [{
+              model: models.Pasien,
+              where: {
+                no_rm: {
+                [Op.like]: `%${q}%`
+                },
+              }
+            }]
           }
-        ]
+        ],
+        order: [['createdAt','DESC']]
     })
     }).then(data => {
       const { pages } = pagination
