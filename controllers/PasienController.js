@@ -36,7 +36,7 @@ module.exports = {
 
   },
   search: (req,res) => {
-    const { no_rm, nama, tanggal_lahir } = req.body
+    const { no_rm, nama, tanggal_lahir, no_telp } = req.body
     models.Pasien.findAll({
       where: {
         [Op.or]: [
@@ -48,6 +48,9 @@ module.exports = {
           }},
           { tanggal_lahir: {
             [Op.eq]: tanggal_lahir
+          }},
+          { no_telp: {
+            [Op.eq]: no_telp
           }},
         ]
       }
