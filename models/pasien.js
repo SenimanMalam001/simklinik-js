@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     tanggal_lahir: DataTypes.STRING,
     alamat: DataTypes.STRING,
     no_telp: DataTypes.STRING,
+    alergi: DataTypes.STRING,
     penjamin: DataTypes.INTEGER
   }, {});
   Pasien.associate = function(models) {

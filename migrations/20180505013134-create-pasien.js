@@ -29,6 +29,10 @@ module.exports = {
       no_telp: {
         type: Sequelize.STRING
       },
+      alergi: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       penjamin: {
         type: Sequelize.INTEGER,
         allowNull: false
