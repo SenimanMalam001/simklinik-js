@@ -36,7 +36,7 @@ module.exports = {
 
   },
   search: (req,res) => {
-    const { no_rm, nama, tanggal_lahir, no_telp } = req.body
+    const { no_rm, nama, alamat, no_telp } = req.body
     models.Pasien.findAll({
       where: {
         [Op.or]: [
@@ -46,8 +46,8 @@ module.exports = {
           { nama: {
             [Op.like]: `${nama}%`
           }},
-          { tanggal_lahir: {
-            [Op.eq]: tanggal_lahir
+          { alamat: {
+            [Op.like]: `%${alamat}%`
           }},
           { no_telp: {
             [Op.eq]: no_telp
@@ -138,7 +138,7 @@ module.exports = {
 
   },
   create: (req, res) => {
-    const { nama, alamat, gender, no_telp, tanggal_lahir, penjamin } = req.body
+    const { nama, alamat, gender, no_telp, tanggal_lahir, penjamin, alergi } = req.body
 
     models.Profil.findOne({
       where: { id: 1}
@@ -163,7 +163,8 @@ module.exports = {
           gender,
           no_telp,
           tanggal_lahir,
-          penjamin
+          penjamin,
+          alergi
         }).then((pasien) => {
           res.status(201).json({
             message: 'Success Create Pasien',
@@ -182,7 +183,7 @@ module.exports = {
   },
   update: (req, res) => {
     const { id } = req.params
-    const { nama, alamat, gender, no_telp, tanggal_lahir, penjamin } = req.body
+    const { nama, alamat, gender, no_telp, tanggal_lahir, penjamin, alergi } = req.body
     models.Pasien.findOne({
       where: { id: id}
     }).then((pasien) => {
@@ -193,7 +194,8 @@ module.exports = {
           gender,
           no_telp,
           tanggal_lahir,
-          penjamin
+          penjamin,
+          alergi
         }).then((updatedRuangan) => {
           res.status(200).json({
             message: 'Success Update Pasien',
