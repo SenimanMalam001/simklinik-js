@@ -97,9 +97,10 @@ module.exports = {
           id: data.id,
           no_rm: data.Pasien.no_rm,
           nama: data.Pasien.nama,
-          dokter: data.User.name,
-          poli: data.Poli.display_name,
-          no_antrian: data.no_antrian
+          dokter: data.User ? data.User.name : '-',
+          poli: data.Poli ? data.Poli.display_name: '-',
+          no_antrian: data.no_antrian,
+          status_registrasi: data.status_registrasi
         }
       })
       res.status(200).json({

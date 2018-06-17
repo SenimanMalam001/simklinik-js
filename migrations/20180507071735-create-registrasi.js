@@ -23,7 +23,6 @@ module.exports = {
       },
       dokter: {
         type: Sequelize.INTEGER,
-        allowNull: false
       },
       ruangan: {
         type: Sequelize.INTEGER
