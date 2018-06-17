@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     cara_bayar: DataTypes.INTEGER,
     jumlah_bayar: DataTypes.INTEGER,
     jumlah_kredit: DataTypes.INTEGER,
+    keterangan: DataTypes.STRING,
     userCreated: DataTypes.INTEGER,
     userEdited: DataTypes.INTEGER
   }, {});
@@ -70,6 +71,14 @@ module.exports = (sequelize, DataTypes) => {
       return sequelize.models.Piutang.destroy({
         where: {
           no_penjualan: no_trans
+        }
+      })
+    }).then((result) => {
+      return sequelize.models.Registrasi.update({
+        status_registrasi: 0
+      },{
+        where: {
+          id: item.no_reg
         }
       })
     }).then(() => {

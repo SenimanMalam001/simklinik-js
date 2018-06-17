@@ -41,6 +41,10 @@ module.exports = {
       jumlah_kredit: {
         type: Sequelize.INTEGER
       },
+      keterangan: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       userCreated: {
         type: Sequelize.INTEGER,
         allowNull: false,

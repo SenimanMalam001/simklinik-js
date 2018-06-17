@@ -140,7 +140,8 @@ module.exports = {
       jumlah_kredit,
       cara_bayar,
       no_reg,
-      petugas
+      petugas,
+      keterangan
     } = req.body
     const { user } = req
     models.sequelize.transaction().then(t => {
@@ -155,7 +156,8 @@ module.exports = {
         cara_bayar,
         jumlah_kredit,
         userCreated: user.id,
-        userEdited: user.id
+        userEdited: user.id,
+        keterangan
       }, { transaction: t, petugas: petugas }).then((result) => {
           res.status(201).json({
             message: 'Success Create Penjualan',
