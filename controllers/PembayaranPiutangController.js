@@ -5,7 +5,30 @@ const sequelize = require('sequelize')
 const moment = require('moment')
 
 module.exports = {
-
+  interval: (req,res) => {
+    const { dari_tanggal, sampai_tanggal, penjamin} = req.query
+    const where = {
+        createdAt: {
+          [Op.gte]: new Date(Number(dari_tanggal)),
+          [Op.lte]: new Date(Number(sampai_tanggal))
+        },
+        penjamin,
+        status_bayar: 0
+      }
+    models.Piutang.all({
+      where,
+    }).then(async data => {
+        res.status(200).json({
+          message: 'Success Read Piutang',
+          data,
+        })
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+  },
   find: (req,res) => {
     const { id } = req.params
     models.PembayaranPiutang.findOne({

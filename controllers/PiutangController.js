@@ -4,7 +4,6 @@ const transaction = require('sequelize').transaction
 const sequelize = require('sequelize')
 
 module.exports = {
-
   find: (req,res) => {
     const { id } = req.params
     models.Piutang.findOne({
