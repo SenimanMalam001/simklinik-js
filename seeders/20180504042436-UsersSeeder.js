@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 module.exports = {
   up: (queryInterface, Sequelize) => {
     const password = bcrypt.hashSync('rahasia', 10);
-    return queryInterface.bulkInsert('users', [
+    return queryInterface.bulkInsert('Users', [
       {
         name: 'admin',
         username: 'admin',
