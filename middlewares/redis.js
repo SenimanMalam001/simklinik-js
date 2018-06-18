@@ -1,5 +1,6 @@
 const redis = require("redis");
-const client = redis.createClient();
+const redis_url = process.env.REDIS_URL || null;
+const client = redis.createClient(redis_url);
 
 
 module.exports = {
