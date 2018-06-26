@@ -100,7 +100,7 @@ module.exports = {
 
   },
   create: (req, res) => {
-    const { nama, kode, tipe, harga_beli, harga_jual_1, harga_jual_2, harga_jual_3 } = req.body
+    const { nama, kode, tipe, harga_beli, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4 } = req.body
     models.Produk.create({
       nama,
       kode,
@@ -108,7 +108,8 @@ module.exports = {
       harga_beli,
       harga_jual_1,
       harga_jual_2,
-      harga_jual_3
+      harga_jual_3,
+      harga_jual_4
     }).then((produk) => {
       delCache('Produk')
       res.status(201).json({
@@ -130,7 +131,7 @@ module.exports = {
   },
   update: (req, res) => {
     const { id } = req.params
-    const { nama, kode, tipe, harga_beli, harga_jual_1, harga_jual_2, harga_jual_3 } = req.body
+    const { nama, kode, tipe, harga_beli, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4 } = req.body
     models.Produk.findOne({
       where: { id: id}
     }).then((produk) => {
@@ -142,7 +143,8 @@ module.exports = {
           harga_beli,
           harga_jual_1,
           harga_jual_2,
-          harga_jual_3
+          harga_jual_3,
+          harga_jual_4
         }).then((updatedRuangan) => {
           delCache('Produk')
           res.status(200).json({

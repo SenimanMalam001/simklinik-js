@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     const produks = []
-    for (var i = 0; i < 1000; i++) {
+    for (var i = 0; i < 10; i++) {
       produks.push({
         nama: `Obat Manjur  ${i}`,
         kode: `OB${i}`,

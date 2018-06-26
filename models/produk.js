@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0
     } ,
+    harga_jual_4: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    } ,
   }, {});
   Produk.associate = function(models) {
     // associations can be defined here
