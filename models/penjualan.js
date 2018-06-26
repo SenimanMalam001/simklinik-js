@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   Penjualan.associate = function(models) {
     // associations can be defined here
     Penjualan.belongsTo(models.Penjamin, { foreignKey: 'penjamin' })
+    Penjualan.belongsTo(models.Registrasi, { foreignKey: 'no_reg' })
+    Penjualan.belongsTo(models.User, { foreignKey: 'userCreated' })
     Penjualan.hasMany(models.PetugasPenjualan, { foreignKey: 'penjualan', sourceKey: 'no_trans'} )
     Penjualan.hasMany(models.DetailPenjualan, { foreignKey: 'no_trans', sourceKey: 'no_trans'} )
   };

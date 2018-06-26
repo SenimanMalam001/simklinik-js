@@ -159,10 +159,30 @@ module.exports = {
         userEdited: user.id,
         keterangan
       }, { transaction: t, petugas: petugas }).then((result) => {
+        return result
+      }).then(async (result) => {
+        try {
+          const petugas = await models.User.findOne({
+            where: {
+              id: result.userCreated
+            }
+          })
           res.status(201).json({
             message: 'Success Create Penjualan',
-            data: result
+            data: {
+              no_trans: result.no_trans,
+              subtotal: result.subtotal,
+              diskon: result.diskon,
+              total_akhir: result.total_akhir,
+              jumlah_bayar: result.jumlah_bayar,
+              createdAt: result.createdAt,
+              petugas: petugas.name
+            }
           })
+        } catch (e) {
+          console.log(e);
+        }
+
       }).catch((err) => {
         console.log(err);
         res.status(500).json({
