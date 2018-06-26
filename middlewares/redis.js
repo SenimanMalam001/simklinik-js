@@ -24,5 +24,8 @@ module.exports = {
   },
   caching: (key, data) => {
     client.set(key, JSON.stringify(data) )
+  },
+  delCache: (key) => {
+    client.del(key)
   }
 }

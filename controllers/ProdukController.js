@@ -1,6 +1,6 @@
 const models = require('../models');
 const Op = require('sequelize').Op
-const { caching } = require('../middlewares/redis')
+const { caching, delCache } = require('../middlewares/redis')
 
 module.exports = {
   all: (req,res) => {
@@ -110,6 +110,7 @@ module.exports = {
       harga_jual_2,
       harga_jual_3
     }).then((produk) => {
+      delCache('Produk')
       res.status(201).json({
         message: 'Success Create Produk',
         data: produk
@@ -143,6 +144,7 @@ module.exports = {
           harga_jual_2,
           harga_jual_3
         }).then((updatedRuangan) => {
+          delCache('Produk')
           res.status(200).json({
             message: 'Success Update Produk',
             data: updatedRuangan
@@ -177,6 +179,7 @@ module.exports = {
         id: id
       }
     }).then((produk) => {
+      delCache('Produk')
       produk.destroy().then(() => {
         res.status(200).json({
           message: 'Success Delete Produk',
