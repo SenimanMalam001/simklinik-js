@@ -5,9 +5,9 @@ const { interval, find, index, create, update, destroy} = require('../controller
 
 router.get('/interval', interval);
 router.get('/', index);
-router.get('/:id', auth, otoritas, find);
-router.post('/', auth, otoritas, create);
-router.put('/:id', auth, otoritas, update);
-router.delete('/:id', auth, otoritas, destroy);
+router.get('/:id', auth,  find);
+router.post('/', auth,  create);
+router.put('/:id', auth,  update);
+router.delete('/:id', auth,  destroy);
 
 module.exports = router;

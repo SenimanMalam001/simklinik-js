@@ -3,11 +3,11 @@ const router = express.Router();
 const { auth, otoritas} = require('../middlewares/auth')
 const { interval, find, index, create, update, destroy} = require('../controllers/StokOpnameController')
 
-router.get('/interval', auth, otoritas, interval);
-router.get('/:id', auth, otoritas, find);
-router.get('/', auth, otoritas, index);
-router.post('/', auth, otoritas, create);
-router.put('/:id', auth, otoritas, update);
-router.delete('/:id', auth, otoritas, destroy);
+router.get('/interval', auth, interval);
+router.get('/:id', auth, find);
+router.get('/', auth, index);
+router.post('/', auth, create);
+router.put('/:id', auth, update);
+router.delete('/:id', auth, destroy);
 
 module.exports = router;

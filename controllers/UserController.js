@@ -213,7 +213,7 @@ module.exports = {
           } }, 'secret');
           res.status(200).json({
             message: 'Success Signin',
-            data: { token }
+            data: { token, role: user.role  }
           })
         } else {
           res.status(403).json({

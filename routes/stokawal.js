@@ -3,10 +3,10 @@ const router = express.Router();
 const { auth, otoritas} = require('../middlewares/auth')
 const {  createStokAwal,find, index, create, update, destroy} = require('../controllers/StokAwalController')
 
-router.get('/:id', auth, otoritas, find);
-router.get('/', auth, otoritas, index);
-router.post('/', auth, otoritas, create, createStokAwal);
-router.put('/:id', auth, otoritas, update);
-router.delete('/:id', auth, otoritas, destroy);
+router.get('/:id', auth, find);
+router.get('/', auth, index);
+router.post('/', auth, create, createStokAwal);
+router.put('/:id', auth, update);
+router.delete('/:id', auth, destroy);
 
 module.exports = router;

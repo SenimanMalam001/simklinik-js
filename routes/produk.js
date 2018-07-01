@@ -4,11 +4,11 @@ const { auth, otoritas} = require('../middlewares/auth')
 const { cached } = require('../middlewares/redis')
 const {  all, find, index, create, update, destroy} = require('../controllers/ProdukController')
 
-router.get('/', auth, otoritas, index);
-router.get('/all', auth, otoritas, cached, all);
-router.get('/:id', auth, otoritas, find);
-router.post('/', auth, otoritas, create);
-router.put('/:id', auth, otoritas, update);
-router.delete('/:id', auth, otoritas, destroy);
+router.get('/', auth,  index);
+router.get('/all', auth,  cached, all);
+router.get('/:id', auth,  find);
+router.post('/', auth,  create);
+router.put('/:id', auth,  update);
+router.delete('/:id', auth,  destroy);
 
 module.exports = router;
