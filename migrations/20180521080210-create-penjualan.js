@@ -23,6 +23,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      keterangan: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       subtotal: {
         type: Sequelize.INTEGER
       },

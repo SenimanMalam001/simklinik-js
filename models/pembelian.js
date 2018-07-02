@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   Pembelian.associate = function(models) {
     // associations can be defined here
     Pembelian.belongsTo(models.Supplier, { foreignKey: 'supplier' })
+    Pembelian.hasMany(models.DetailPembelian, { foreignKey: 'no_trans', sourceKey: 'no_trans'} )
   };
   Pembelian.beforeCreate(async (item, options) => {
     try {

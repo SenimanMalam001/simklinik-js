@@ -2,6 +2,7 @@ const models = require('../models');
 const Op = require('sequelize').Op
 const transaction = require('sequelize').transaction
 const sequelize = require('sequelize')
+const moment = require('moment')
 
 module.exports = {
   find: (req,res) => {
@@ -10,7 +11,13 @@ module.exports = {
     models.Pembelian.findOne({
       where: {
         id: id
-      }
+      },
+      include: [
+        {
+          model: models.DetailPembelian,
+          include: [ { model: models.Produk}]
+        }
+      ]
     }).then(pembelian => {
       models.TbsPembelian.destroy({
         where: {
@@ -101,6 +108,7 @@ module.exports = {
           no_trans: data.no_trans,
           supplier: data.Supplier.nama,
           total_akhir: data.total_akhir,
+          waktu: moment(data.createdAt).format('DD-MM-YYYY, h:mm:ss')
         })
       })
       res.status(200).json({
