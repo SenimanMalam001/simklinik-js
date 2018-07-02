@@ -1,5 +1,6 @@
 const models = require('../models');
 const Op = require('sequelize').Op
+const moment = require('moment')
 
 module.exports = {
   find: (req,res) => {
@@ -112,6 +113,8 @@ module.exports = {
           no_trans: data.no_trans,
           penjamin: data.Penjamin.nama,
           total_akhir: data.total_akhir,
+          waktu: moment(data.createdAt).format('DD-MM-YYYY, h:mm:ss'),
+          keterangan: data.keterangan
         })
       })
       res.status(200).json({
