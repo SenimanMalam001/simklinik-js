@@ -23,6 +23,10 @@ module.exports = {
         {
           model: models.DetailPenjualan,
           include: [ { model: models.Produk}]
+        },
+        {
+          model: models.Registrasi,
+          include: [ { model: models.Pasien}]
         }
       ]
     }).then(penjualan => {
@@ -104,6 +108,10 @@ module.exports = {
         include: [
           {
             model: models.Penjamin,
+          },
+          {
+            model: models.Registrasi,
+            include: [ { model: models.Pasien}]
           }
         ]
       })
@@ -114,6 +122,7 @@ module.exports = {
         penjualan.push({
           id: data.id,
           no_trans: data.no_trans,
+          pasien: data.Registrasi ? `${data.Registrasi.Pasien.no_rm} | ${data.Registrasi.Pasien.nama}` : '-' ,
           penjamin: data.Penjamin.nama,
           total_akhir: data.total_akhir,
           waktu: moment(data.createdAt).format('DD-MM-YYYY, h:mm:ss'),
