@@ -10,6 +10,7 @@ module.exports = {
       },
       no_rekam_medik: {
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false
       },
       no_reg: {
