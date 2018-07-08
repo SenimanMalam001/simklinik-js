@@ -139,7 +139,6 @@ module.exports = {
   },
   create: (req, res) => {
     const { nama, alamat, gender, no_telp, tanggal_lahir, penjamin, alergi } = req.body
-
     models.Profil.findOne({
       where: { id: 1}
     }).then((profil) => {
@@ -150,7 +149,7 @@ module.exports = {
             [Op.like]: `${profil.kode}%`
           }
         },
-        order: [['createdAt', 'DESC']]
+        order: [['id', 'DESC']]
       }).then((pasien) => {
         let { no_rm } = pasien[0]
         no_rm = no_rm.split('-')
