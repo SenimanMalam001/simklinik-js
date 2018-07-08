@@ -1,6 +1,8 @@
 const models = require('../models');
 const Op = require('sequelize').Op
 const { caching, delCache } = require('../middlewares/redis')
+var {uploadExcell} = require('../middlewares/upload')
+const xlsx = require('node-xlsx').default;
 
 module.exports = {
   all: (req,res) => {
@@ -99,7 +101,47 @@ module.exports = {
     })
 
   },
-  create: (req, res) => {
+  create: async (req, res, next) => {
+   uploadExcell(req, res, (err) => {
+      if (err) {
+        return res.status(500).json({ message: err})
+      }
+      if (!req.file) {
+        next()
+      } else {
+        const workSheetsFromFile = xlsx.parse(req.file.path);
+        const produks = []
+        workSheetsFromFile[0].data.forEach((data, index) => {
+          if (index > 0) {
+            produks.push({
+              kode: data[0],
+              nama: data[1],
+              tipe: data[2],
+              satuan: data[3],
+              harga_beli: data[4],
+              harga_jual_1: data[5],
+              harga_jual_2: data[6],
+              harga_jual_3: data[7],
+              harga_jual_4: data[8]
+            })
+          }
+        })
+        models.Produk.bulkCreate(produks,{ individualHooks: true}).then((produk) => {
+          delCache('Produk')
+          res.status(201).json({
+            message: 'Success Create Produk',
+            data: produk
+          })
+        }).catch(err => {
+          console.log(err)
+          res.status(500).json({
+            message: 'Something Went Wrong',
+          })
+        })
+      }
+    })
+  },
+  createProduk: (req, res) => {
     const { nama, kode, tipe, harga_beli, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4 } = req.body
     models.Produk.create({
       nama,
