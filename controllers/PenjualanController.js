@@ -125,7 +125,7 @@ module.exports = {
           pasien: data.Registrasi ? `${data.Registrasi.Pasien.no_rm} | ${data.Registrasi.Pasien.nama}` : '-' ,
           penjamin: data.Penjamin.nama,
           total_akhir: data.total_akhir,
-          waktu: moment(data.createdAt).format('DD-MM-YYYY, h:mm:ss'),
+          waktu: moment(data.createdAt).format('DD-MM-YYYY, h:mm:ss a'),
           keterangan: data.keterangan
         })
       })
