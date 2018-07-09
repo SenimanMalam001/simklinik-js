@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
   Penjualan.beforeCreate(async (item, options) => {
     try {
       //no trans
-      const penjualan = await Penjualan.findOne({ order: [['createdAt', 'DESC']]},{ transaction: options.transaction})
+      const penjualan = await Penjualan.findOne({ order: [['id', 'DESC']]},{ transaction: options.transaction})
       if (penjualan) {
         let { no_trans } = penjualan
         no_trans = no_trans.split('-')
