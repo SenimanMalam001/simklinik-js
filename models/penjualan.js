@@ -227,7 +227,8 @@ module.exports = (sequelize, DataTypes) => {
           jumlah,
           subtotal,
           diskon,
-          total_akhir
+          total_akhir,
+          createdAt
         })
       })
       return sequelize.models.DetailPenjualan.bulkCreate( detailPenjualan, { individualHooks: true, transaction: options.transaction})
@@ -282,6 +283,14 @@ module.exports = (sequelize, DataTypes) => {
           user: userEdited
         }
       },{ transaction: options.transaction})
+    }).then(() => {
+      return sequelize.models.Registrasi.update({
+        status_registrasi: 1
+      }, {
+        where: {
+          id: no_reg
+        }
+      })
     }).then( async () => {
       try {
         await sequelize.models.TransaksiKas.destroy({
@@ -305,7 +314,8 @@ module.exports = (sequelize, DataTypes) => {
             kas: cara_bayar,
             masuk: terbayar,
             kategori: kategori.id,
-            jenis_transaksi: 'penjualan'
+            jenis_transaksi: 'penjualan',
+            createdAt
           })
         }
         if (piutang > 0) {
@@ -313,6 +323,7 @@ module.exports = (sequelize, DataTypes) => {
             no_penjualan: no_trans,
             penjamin,
             jumlah: piutang,
+            createdAt
           })
         }
       } catch (e) {
