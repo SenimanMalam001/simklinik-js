@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Pembelian.afterDestroy((item, options) => {
     const { no_trans }  = item
+    
     sequelize.models.DetailPembelian.destroy({
       where: {
         no_trans: no_trans
@@ -45,7 +46,15 @@ module.exports = (sequelize, DataTypes) => {
       individualHooks: true
     }, {
       transaction: options.transaction,
-    }).then(persediaan => {
+    }).then(()=> {
+      return sequelize.models.TransaksiKas.destroy({
+        where: {
+          no_trans: no_trans
+        },
+      }, {
+        transaction: options.transaction
+      })
+    }).then(() => {
       return options.transaction.commit()
     }).catch( err => {
       console.log(err)
