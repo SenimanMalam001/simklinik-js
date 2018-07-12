@@ -3,6 +3,46 @@ const Op = require('sequelize').Op
 const moment = require('moment')
 
 module.exports = {
+  interval: (req, res) => {
+    const { dari_tanggal, sampai_tanggal} = req.query
+    models.Penjualan.findAll({
+      where: {
+        createdAt: {
+          [Op.gte]: new Date(Number(dari_tanggal)),
+          [Op.lte]: new Date(Number(sampai_tanggal))
+        },
+      },
+      include: [
+        {
+          model: models.PetugasPenjualan
+        },
+        {
+          model: models.Penjamin
+        },
+        {
+          model: models.User
+        },
+        {
+          model: models.DetailPenjualan,
+          include: [ { model: models.Produk}]
+        },
+        {
+          model: models.Registrasi,
+          include: [ { model: models.Pasien}]
+        }
+      ]
+    }).then(penjualan => {
+      res.status(200).json({
+        message: 'Success Get Penjualan',
+        data: penjualan
+      })
+    }).catch(err => {
+      console.log(err)
+      res.status(500).json({
+        message: 'Something Went Wrong'
+      })
+    })
+  },
   find: (req,res) => {
     const { id } = req.params
     const { user } = req
