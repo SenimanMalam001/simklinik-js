@@ -44,16 +44,28 @@ module.exports = {
       return pagination
     }).then(pagination => {
       const { limit, offset} = pagination
+      const queryPencarian = {
+        queryUser: '',
+        queryProduk: ''
+      }
+      if (q) {
+        q = q.replace(/ /g, '').split('|')
+        queryPencarian.queryUser = q[0]
+        if (q[1]) {
+          queryPencarian.queryProduk = q[1]
+        }
+      }
       return models.Komisi.all({
         limit,
         offset,
         include: [
           {
             model: models.User,
+            where: { name: { [Op.like]: `%${queryPencarian.queryUser}%`}}
           },
           {
             model: models.Produk,
-            where: { nama: { [Op.like]: `%${q}%`}}
+            where: { nama: { [Op.like]: `%${queryPencarian.queryProduk}%`}}
           }
         ]
       })
