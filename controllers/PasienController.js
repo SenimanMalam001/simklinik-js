@@ -37,22 +37,39 @@ module.exports = {
   },
   search: (req,res) => {
     const { no_rm, nama, alamat, no_telp } = req.body
-    models.Pasien.findAll({
-      where: {
-        [Op.or]: [
+    const queryPencarian = []
+    if (no_rm) {
+      queryPencarian.push(
           { no_rm: {
-            [Op.eq]: no_rm
-          }},
+              [Op.eq]: no_rm
+            }
+          },
+      )
+    }
+    if (nama) {
+      queryPencarian.push(
           { nama: {
-            [Op.like]: `${nama}%`
+            [Op.like]: `%${nama}%`
           }},
+      )
+    }
+    if (alamat) {
+      queryPencarian.push(
           { alamat: {
             [Op.like]: `%${alamat}%`
           }},
+      )
+    }
+    if (no_telp) {
+      queryPencarian.push(
           { no_telp: {
             [Op.eq]: no_telp
           }},
-        ]
+      )
+    }
+    models.Pasien.findAll({
+      where: {
+        [Op.and]: queryPencarian
       }
     }).then(pasien => {
       res.status(200).json({

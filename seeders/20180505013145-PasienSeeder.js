@@ -4,7 +4,7 @@ const faker = require('faker')
 module.exports = {
   up: (queryInterface, Sequelize) => {
     let pasiens = []
-    for (var i = 0; i < 1; i++) {
+    for (var i = 0; i < 200; i++) {
       pasiens.push({
         no_rm: `K01-${i + 1}`,
         nama: faker.name.findName(),
