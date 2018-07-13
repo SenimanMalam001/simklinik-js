@@ -152,21 +152,30 @@ module.exports = {
           {
             model: models.Registrasi,
             include: [ { model: models.Pasien}]
-          }
+          },
+          {
+            model: models.PetugasPenjualan,
+            include: [ { model: models.User}]
+          },
         ]
       })
     }).then(data => {
       const { pages } = pagination
       let penjualan = []
+      
       data.forEach(data => {
+        const petugas = data.PetugasPenjualans.map(petugas => {
+          return petugas.User.name
+        }).join(', ')
         penjualan.push({
           id: data.id,
           no_trans: data.no_trans,
           pasien: data.Registrasi ? `${data.Registrasi.Pasien.no_rm} | ${data.Registrasi.Pasien.nama}` : '-' ,
           penjamin: data.Penjamin.nama,
           total_akhir: data.total_akhir,
+          keterangan: data.keterangan,
+          petugas,
           waktu: moment(data.createdAt).format('DD-MM-YYYY, h:mm:ss a'),
-          keterangan: data.keterangan
         })
       })
       res.status(200).json({

@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   PetugasPenjualan.associate = function(models) {
     // associations can be defined here
+    PetugasPenjualan.belongsTo(models.User, { foreignKey: 'user'} )
   };
   return PetugasPenjualan;
 };
