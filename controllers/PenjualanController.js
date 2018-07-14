@@ -154,6 +154,9 @@ module.exports = {
             include: [ { model: models.Pasien}]
           },
           {
+            model: models.User
+          },
+          {
             model: models.PetugasPenjualan,
             include: [ { model: models.User}]
           },
@@ -175,6 +178,7 @@ module.exports = {
           total_akhir: data.total_akhir,
           keterangan: data.keterangan,
           petugas,
+          penginput: data.User.name,
           waktu: moment(data.createdAt).format('DD-MM-YYYY, h:mm:ss a'),
         })
       })
