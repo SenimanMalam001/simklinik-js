@@ -95,6 +95,35 @@ module.exports = {
     })
 
   },
+  createCopy: (req, res) => {
+    const {user_copy, user_paste } = req.body
+    models.Komisi.findAll({
+      where: {
+        user: user_copy
+      }
+    }).then(komisi => {
+      const komisiPaste = komisi.map(data => {
+        return {
+          produk: data.produk,
+          user: user_paste,
+          jumlah: data.jumlah,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+      })
+      return models.Komisi.bulkCreate(komisiPaste)
+    }).then(komisi => {
+      res.status(201).json({
+        message: 'Success Create Komisi',
+        data: komisi
+      })
+    }).catch((err) => {
+      console.log(err)
+      res.status(500).json({
+        message: 'Something Went Wrong',
+      })
+    })
+  },
   create: (req, res) => {
     const { produk, user, jumlah } = req.body
     models.Komisi.create({
@@ -107,6 +136,7 @@ module.exports = {
         data: penjamin
       })
     }).catch((err) => {
+      console.log(err);
       res.status(500).json({
         message: 'Something Went Wrong',
       })
